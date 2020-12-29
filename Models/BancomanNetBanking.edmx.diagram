@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="14b943149f464992aa282712aedcdf0a" Name="Diagram1" >
+        <EntityTypeShape EntityType="BancomanNetBankingModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="6.75" />
+        <EntityTypeShape EntityType="BancomanNetBankingModel.AspNetRoles" Width="1.5" PointX="0.75" PointY="2.5" />
+        <EntityTypeShape EntityType="BancomanNetBankingModel.AspNetUserClaims" Width="1.5" PointX="5.25" PointY="3.625" />
+        <EntityTypeShape EntityType="BancomanNetBankingModel.AspNetUserLogins" Width="1.5" PointX="5.25" PointY="1" />
+        <EntityTypeShape EntityType="BancomanNetBankingModel.AspNetUsers" Width="1.5" PointX="3" PointY="1.375" />
+        <AssociationConnector Association="BancomanNetBankingModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="BancomanNetBankingModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="BancomanNetBankingModel.AspNetUserRoles" />
+        <EntityTypeShape EntityType="BancomanNetBankingModel.NetBankingUserRequest" Width="1.5" PointX="3.375" PointY="6.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
