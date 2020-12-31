@@ -17,6 +17,7 @@ namespace NetBanking.Controllers
         // GET: NetBankingUserRequests
         public ActionResult Index()
         {
+            ViewBag.MiNombre = "Lissette Cid";
             return View(db.NetBankingUserRequest.ToList());
         }
 

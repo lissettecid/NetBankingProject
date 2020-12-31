@@ -4,7 +4,7 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>@ViewBag.Title @ViewBag.MiNombre</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -62,62 +62,76 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.IdCard)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BirthDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PhoneNumber)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CellPhone)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.WorkTel)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Address)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.WorkAddress)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PersonalEmail)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.WorkEmail)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RequestDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RequestStatus)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StatusComment)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmployeeAuthorizationID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateAuthorization)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdCard)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BirthDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CellPhone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WorkTel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WorkAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PersonalEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WorkEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RequestDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RequestStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StatusComment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmployeeAuthorizationID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateAuthorization)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Borrar", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+            </td>
+        </tr>
+    }
 
 </table>
+
+<br />
+<button type="button" class="btn btn-primary">Primary</button>
+<button type="button" class="btn btn-secondary">Secondary</button>
+<button type="button" class="btn btn-success">Success</button>
+<button type="button" class="btn btn-danger">Danger</button>
+<button type="button" class="btn btn-warning">Warning</button>
+<button type="button" class="btn btn-info">Info</button>
+<button type="button" class="btn btn-light">Light</button>
+<button type="button" class="btn btn-dark">Dark</button>
+
+<button type="button" class="btn btn-link">Link</button>
+**<i class="bi-alarm"></i>**
