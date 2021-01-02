@@ -406,6 +406,7 @@
     <Content Include="Views\Shared\_LayoutNetBanking.cshtml" />
     <Content Include="Views\NetBankingUserRequests\ViewPrueba.cshtml" />
     <Content Include="Views\vOffice\Index.cshtml" />
+    <Content Include="Views\Shared\_LayoutvOffice.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
