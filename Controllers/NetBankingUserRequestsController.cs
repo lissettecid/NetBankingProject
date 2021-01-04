@@ -49,6 +49,7 @@ namespace NetBanking.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,IdCard,Name,LastName,BirthDate,PhoneNumber,CellPhone,WorkTel,Address,WorkAddress,PersonalEmail,WorkEmail,RequestDate,RequestStatus,StatusComment,EmployeeAuthorizationID,DateAuthorization")] NetBankingUserRequest netBankingUserRequest)
         {
+            netBankingUserRequest.RequestDate = DateTime.Now;
             if (ModelState.IsValid)
             {
                 db.NetBankingUserRequest.Add(netBankingUserRequest);
