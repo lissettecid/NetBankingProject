@@ -36,10 +36,10 @@
                     <div class="dropdown-divider"></div>
                     @*<a class="dropdown-item" href="login.html">Logout</a>*@
                     @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "dropdown-item" }))
-                    {
+                     {
                         @Html.AntiForgeryToken()
                         <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
-                    }
+                     }
                 </div>
             </li>
         </ul>
