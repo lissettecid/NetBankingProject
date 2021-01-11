@@ -50,21 +50,34 @@
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
-                        <div class="sb-sidenav-menu-heading">@User.Identity.GetUserName()</div>
+                        <div class="sb-sidenav-menu-heading">Bienvenido</div>
                         <a class="nav-link" href="Index.cshtml">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            <div class="sb-nav-link-icon"><i class="fas fa-home"></i></div>
                             Inicio
                         </a>
-                        <div class="sb-sidenav-menu-heading">Interface</div>
+                        @*<div class="sb-sidenav-menu-heading">Interface</div>*@
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePagos" aria-expanded="false" aria-controls="collapseLayouts">
+                            <div class="sb-nav-link-icon"><i class="fas fa-check"></i></div>
+                            Pagos
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a> 
+                        <div class="collapse" id="collapsePagos" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="#">Trajetas de Crédito</a>
+                                <a class="nav-link" href="#">Préstamos</a>
+                                <a class="nav-link" href="#">Historial</a>
+                            </nav>
+                        </div>
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTransacciones" aria-expanded="false" aria-controls="collapseLayouts">
                             <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                            Transacciones
+                            Transferencias
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
                         <div class="collapse" id="collapseTransacciones" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="#">Transferencias</a>
-                                <a class="nav-link" href="#">Pagos</a>
+                                <a class="nav-link" href="#">Entre mis cuentas</a>
+                                <a class="nav-link" href="#">Cuentas a terceros</a>
+                                <a class="nav-link" href="#">Historial</a>
                             </nav>
                         </div>
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
