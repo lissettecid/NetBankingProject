@@ -54,7 +54,7 @@ namespace NetBanking.Controllers
             {
                 db.NetBankingUserRequest.Add(netBankingUserRequest);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("../Home/Index");
             }
 
             return View(netBankingUserRequest);
