@@ -13,12 +13,12 @@ namespace NetBanking.Controllers
         // GET: vOffice
         public ActionResult Index()
         {
-            return View(db.NetBankingUserRequest.ToList());
+            return View();
         }
 
         public ActionResult CuentasPropias()
         {
-            return View();
+            return View(db.NetBankingUserRequest.ToList());
         }
     }
 }
