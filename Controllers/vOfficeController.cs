@@ -18,7 +18,17 @@ namespace NetBanking.Controllers
 
         public ActionResult CuentasPropias()
         {
-            return View(db.NetBankingUserRequest.ToList());
+            return View();
+        }
+
+        public ActionResult Createuser()
+        {
+            RegisterViewModel rv = new RegisterViewModel();
+            rv.Email = "fulano@fulano.com";
+            rv.Password = "123456@Ab";
+            rv.ConfirmPassword = "123456@Ab";
+
+
         }
     }
 }

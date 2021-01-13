@@ -1,34 +1,87 @@
-﻿
+﻿@model NetBanking.Models.tblTransactions
+
 @{
     ViewBag.Title = "CuentasPropias";
     Layout = "~/Views/Shared/_LayoutvOffice.cshtml";
 }
 
-<img src="~/Image/Bancoman-escala2.png" width="300" />
-<h3>Transacciones</h3>
+<h2>CuentasPropias</h2>
 
-<div class="form-horizontal">
-    <h5>Transferencia entre cuentas propias</h5>
-    <hr />
-    <div class="form-row">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Cédula</label>
-                <div class="col-md-12">
-                    
-                </div>
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>tblTransactions</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        
+
+
+        <div class="form-group">
+            <label>Desde la cuenta:</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.AccIssuer, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.AccIssuer, "", new { @class = "text-danger" })
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Fecha de Nacimiento</label>
-                <div class="col-md-12">
-                    
-                </div>
+
+        <div class="form-group">
+            <label>Hasta la cuenta</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.AccBeneficiary, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.AccBeneficiary, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TransactType, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TransactType, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TransactType, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MoneType, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.MoneType, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MoneType, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TransactDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TransactDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TransactDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TransactMount, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TransactMount, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TransactMount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Concept, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Concept, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Concept, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </div>
     </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
 </div>
-
-
-

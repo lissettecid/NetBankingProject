@@ -24,5 +24,6 @@ namespace NetBanking.Models
         public decimal TransactMount { get; set; }
         public string Concept { get; set; }
         public string TransactState { get; set; }
+        public string UserId { get; set; }
     }
 }

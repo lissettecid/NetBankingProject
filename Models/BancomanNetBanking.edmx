@@ -87,6 +87,7 @@
           <Property Name="StatusComment" Type="nvarchar" MaxLength="300" />
           <Property Name="EmployeeAuthorizationID" Type="int" />
           <Property Name="DateAuthorization" Type="datetime" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" />
         </EntityType>
         <EntityType Name="tblTransactions">
           <Key>
@@ -102,6 +103,7 @@
           <Property Name="TransactMount" Type="money" Nullable="false" />
           <Property Name="Concept" Type="nvarchar" MaxLength="50" />
           <Property Name="TransactState" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
@@ -322,6 +324,7 @@
           <Property Name="StatusComment" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="EmployeeAuthorizationID" Type="Int32" />
           <Property Name="DateAuthorization" Type="DateTime" Precision="3" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tblTransactions">
           <Key>
@@ -337,6 +340,7 @@
           <Property Name="TransactMount" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
           <Property Name="Concept" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="TransactState" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -410,6 +414,7 @@
           <EntitySetMapping Name="NetBankingUserRequest">
             <EntityTypeMapping TypeName="BancomanNetBankingModel.NetBankingUserRequest">
               <MappingFragment StoreEntitySet="NetBankingUserRequest">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="DateAuthorization" ColumnName="DateAuthorization" />
                 <ScalarProperty Name="EmployeeAuthorizationID" ColumnName="EmployeeAuthorizationID" />
                 <ScalarProperty Name="StatusComment" ColumnName="StatusComment" />
@@ -433,6 +438,7 @@
           <EntitySetMapping Name="tblTransactions">
             <EntityTypeMapping TypeName="BancomanNetBankingModel.tblTransactions">
               <MappingFragment StoreEntitySet="tblTransactions">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="TransactState" ColumnName="TransactState" />
                 <ScalarProperty Name="Concept" ColumnName="Concept" />
                 <ScalarProperty Name="TransactMount" ColumnName="TransactMount" />
