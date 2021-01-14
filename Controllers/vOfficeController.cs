@@ -20,15 +20,5 @@ namespace NetBanking.Controllers
         {
             return View();
         }
-
-        public ActionResult Createuser()
-        {
-            RegisterViewModel rv = new RegisterViewModel();
-            rv.Email = "fulano@fulano.com";
-            rv.Password = "123456@Ab";
-            rv.ConfirmPassword = "123456@Ab";
-
-
-        }
     }
 }
