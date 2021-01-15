@@ -118,16 +118,16 @@
 
                         @if (User.IsInRole("Administrador"))
                         {
-                            <a class="nav-link" href="@Url.Action("Index2", "vOffice")">
+                            <a class="nav-link" href="@Url.Action("Index", "vOffice")">
                                 <div class="sb-nav-link-icon"><i class="fas fa-home"></i></div>
-                                Inicio del Administrador
+                                Inicio
                             </a>
                             <div class="sb-sidenav-menu-heading">Herramientas</div>
                             <a class="nav-link" href="@Url.Action("Authorization", "vOffice")">
                                 <div class="sb-nav-link-icon"><i class="fas fa-user-circle"></i></div>
                                 Autorizar usuarios
                             </a>
-                            <a class="nav-link" href="tables.html">
+                            <a class="nav-link" href="@Url.Action("HistoryRequest", "vOffice")">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Histórico
                             </a>

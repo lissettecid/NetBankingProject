@@ -218,6 +218,9 @@
     <Compile Include="Models\tblTransactions.cs">
       <DependentUpon>BancomanNetBanking.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\UserStatusActivo.cs">
+      <DependentUpon>BancomanNetBanking.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -429,6 +432,8 @@
     <Content Include="Views\vOffice\CuentasPropias.cshtml" />
     <Content Include="Views\vOffice\Authorization.cshtml" />
     <Content Include="Views\vOffice\UserAuthorization.cshtml" />
+    <Content Include="Views\vOffice\HistoryRequest.cshtml" />
+    <Content Include="Views\vOffice\AccUserConsult.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

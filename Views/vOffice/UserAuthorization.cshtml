@@ -80,6 +80,7 @@
                 <th>Estado de Solicitud</th>
                 <th>:</th>
                 <td>
+                    @*@Html.DropDownList("OpcList", null, htmlAttributes: new { @class = "form-control" })*@
                     @Html.EditorFor(model => model.StatusText, new { htmlAttributes = new { @class = "form-control" } })
                 </td>
             </tr>

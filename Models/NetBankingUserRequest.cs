@@ -28,10 +28,10 @@ namespace NetBanking.Models
         public string WorkEmail { get; set; }
         public System.DateTime RequestDate { get; set; }
         public bool RequestStatus { get; set; }
+        public string StatusText { get; set; }
         public string StatusComment { get; set; }
-        public Nullable<int> EmployeeAuthorizationID { get; set; }
+        public string EmployeeAuthorizationID { get; set; }
         public Nullable<System.DateTime> DateAuthorization { get; set; }
         public string UserId { get; set; }
-        public string StatusText { get; set; }
     }
 }

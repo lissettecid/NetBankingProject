@@ -86,7 +86,7 @@
           <Property Name="RequestStatus" Type="bit" Nullable="false" />
           <Property Name="StatusText" Type="nchar" MaxLength="10" />
           <Property Name="StatusComment" Type="nvarchar" MaxLength="300" />
-          <Property Name="EmployeeAuthorizationID" Type="int" />
+          <Property Name="EmployeeAuthorizationID" Type="nvarchar" MaxLength="128" />
           <Property Name="DateAuthorization" Type="datetime" />
           <Property Name="UserId" Type="nvarchar" MaxLength="128" />
         </EntityType>
@@ -105,6 +105,14 @@
           <Property Name="Concept" Type="nvarchar" MaxLength="50" />
           <Property Name="TransactState" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserStatusActivo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Status" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="Inicial" Type="bit" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
@@ -171,6 +179,7 @@
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NetBankingUserRequest" EntityType="Self.NetBankingUserRequest" Schema="user" store:Type="Tables" />
           <EntitySet Name="tblTransactions" EntityType="Self.tblTransactions" Schema="user" store:Type="Tables" />
+          <EntitySet Name="UserStatusActivo" EntityType="Self.UserStatusActivo" Schema="user" store:Type="Tables" />
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
@@ -210,8 +219,9 @@
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
-          <EntitySet Name="NetBankingUserRequest" EntityType="BancomanNetBankingModel.NetBankingUserRequest" />
           <EntitySet Name="tblTransactions" EntityType="BancomanNetBankingModel.tblTransactions" />
+          <EntitySet Name="UserStatusActivo" EntityType="BancomanNetBankingModel.UserStatusActivo" />
+          <EntitySet Name="NetBankingUserRequest" EntityType="BancomanNetBankingModel.NetBankingUserRequest" />
         </EntityContainer>
         <EntityType Name="C__MigrationHistory">
           <Key>
@@ -304,6 +314,30 @@
           <End Type="BancomanNetBankingModel.AspNetRoles" Role="AspNetRoles" Multiplicity="*" />
           <End Type="BancomanNetBankingModel.AspNetUsers" Role="AspNetUsers" Multiplicity="*" />
         </Association>
+        <EntityType Name="tblTransactions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdTransact" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="AccIssuer" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="AccBeneficiary" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="TransactType" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="MoneType" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TransactDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TransactMount" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="Concept" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TransactState" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="UserStatusActivo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Inicial" Type="Boolean" />
+        </EntityType>
         <EntityType Name="NetBankingUserRequest">
           <Key>
             <PropertyRef Name="Id" />
@@ -322,27 +356,11 @@
           <Property Name="WorkEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="RequestDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="RequestStatus" Type="Boolean" Nullable="false" />
+          <Property Name="StatusText" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="StatusComment" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Name="EmployeeAuthorizationID" Type="Int32" />
+          <Property Name="EmployeeAuthorizationID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="DateAuthorization" Type="DateTime" Precision="3" />
           <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="StatusText" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-        </EntityType>
-        <EntityType Name="tblTransactions">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IdTransact" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="AccIssuer" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="AccBeneficiary" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="TransactType" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="MoneType" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="TransactDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="TransactMount" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
-          <Property Name="Concept" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="TransactState" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -413,31 +431,6 @@
               <ScalarProperty Name="Id" ColumnName="RoleId" />
             </EndProperty>
           </AssociationSetMapping>
-          <EntitySetMapping Name="NetBankingUserRequest">
-            <EntityTypeMapping TypeName="BancomanNetBankingModel.NetBankingUserRequest">
-              <MappingFragment StoreEntitySet="NetBankingUserRequest">
-                <ScalarProperty Name="StatusText" ColumnName="StatusText" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="DateAuthorization" ColumnName="DateAuthorization" />
-                <ScalarProperty Name="EmployeeAuthorizationID" ColumnName="EmployeeAuthorizationID" />
-                <ScalarProperty Name="StatusComment" ColumnName="StatusComment" />
-                <ScalarProperty Name="RequestStatus" ColumnName="RequestStatus" />
-                <ScalarProperty Name="RequestDate" ColumnName="RequestDate" />
-                <ScalarProperty Name="WorkEmail" ColumnName="WorkEmail" />
-                <ScalarProperty Name="PersonalEmail" ColumnName="PersonalEmail" />
-                <ScalarProperty Name="WorkAddress" ColumnName="WorkAddress" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="WorkTel" ColumnName="WorkTel" />
-                <ScalarProperty Name="CellPhone" ColumnName="CellPhone" />
-                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
-                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="IdCard" ColumnName="IdCard" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="tblTransactions">
             <EntityTypeMapping TypeName="BancomanNetBankingModel.tblTransactions">
               <MappingFragment StoreEntitySet="tblTransactions">
@@ -451,6 +444,40 @@
                 <ScalarProperty Name="AccBeneficiary" ColumnName="AccBeneficiary" />
                 <ScalarProperty Name="AccIssuer" ColumnName="AccIssuer" />
                 <ScalarProperty Name="IdTransact" ColumnName="IdTransact" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserStatusActivo">
+            <EntityTypeMapping TypeName="BancomanNetBankingModel.UserStatusActivo">
+              <MappingFragment StoreEntitySet="UserStatusActivo">
+                <ScalarProperty Name="Inicial" ColumnName="Inicial" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NetBankingUserRequest">
+            <EntityTypeMapping TypeName="BancomanNetBankingModel.NetBankingUserRequest">
+              <MappingFragment StoreEntitySet="NetBankingUserRequest">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="DateAuthorization" ColumnName="DateAuthorization" />
+                <ScalarProperty Name="EmployeeAuthorizationID" ColumnName="EmployeeAuthorizationID" />
+                <ScalarProperty Name="StatusComment" ColumnName="StatusComment" />
+                <ScalarProperty Name="StatusText" ColumnName="StatusText" />
+                <ScalarProperty Name="RequestStatus" ColumnName="RequestStatus" />
+                <ScalarProperty Name="RequestDate" ColumnName="RequestDate" />
+                <ScalarProperty Name="WorkEmail" ColumnName="WorkEmail" />
+                <ScalarProperty Name="PersonalEmail" ColumnName="PersonalEmail" />
+                <ScalarProperty Name="WorkAddress" ColumnName="WorkAddress" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="WorkTel" ColumnName="WorkTel" />
+                <ScalarProperty Name="CellPhone" ColumnName="CellPhone" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IdCard" ColumnName="IdCard" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

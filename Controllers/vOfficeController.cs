@@ -58,6 +58,7 @@ namespace NetBanking.Controllers
         //[Authorize(Roles = "Cliente")]
         public ActionResult Index()
         {
+            //ViewBag.Prueba = User.Identity.GetUserId();
             return View();
         }
 
@@ -77,6 +78,7 @@ namespace NetBanking.Controllers
         public ActionResult UserAuthorization(int id)
         {
             var solicitante = db.NetBankingUserRequest.Find(id);
+            ViewBag.OpcList = new SelectList(db.UserStatusActivo.Where(x => x.Inicial == true), "Status", "Status", solicitante.StatusText);
             return View(solicitante);
         }
 
@@ -86,15 +88,42 @@ namespace NetBanking.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = netBankingUser.PersonalEmail, Email = netBankingUser.PersonalEmail };
-                var result = await UserManager.CreateAsync(user, "123456@Ab");
-                if (result.Succeeded)
+                var row = db.NetBankingUserRequest.Find(netBankingUser.Id);
+                if (netBankingUser.StatusText == "Solicitud" || netBankingUser.StatusText == "Inactivo")
                 {
-                    string UserId = db.AspNetUsers.Where(x => x.Email == netBankingUser.PersonalEmail).FirstOrDefault().Id;
-                    await UserManager.AddToRoleAsync(UserId, "3");
-                    var row = db.NetBankingUserRequest.Find(netBankingUser.Id);
+                    return RedirectToAction("Authorization");
+                }
+
+                if (netBankingUser.StatusText == "Rechazado")
+                {
                     row.StatusText = netBankingUser.StatusText;
                     row.StatusComment = netBankingUser.StatusComment;
+                    row.EmployeeAuthorizationID = User.Identity.GetUserId();
+                    row.DateAuthorization = DateTime.Now;
+
+
+                    db.Entry(row).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Authorization");
+                }
+                
+                RegisterViewModel rvm = new RegisterViewModel
+                {
+                    Email = row.PersonalEmail,
+                    Password = "123456@Ab",
+                    ConfirmPassword = "123456@Ab"
+                };
+                var user = new ApplicationUser { UserName = rvm.Email, Email = rvm.Email };
+                var result = await UserManager.CreateAsync(user, rvm.Password);
+                if (result.Succeeded)
+                {
+                    string UserId = db.AspNetUsers.Where(x => x.Email == row.PersonalEmail).FirstOrDefault().Id;
+                    await UserManager.AddToRoleAsync(UserId, "Cliente");
+                    
+                    row.StatusText = netBankingUser.StatusText;
+                    row.StatusComment = netBankingUser.StatusComment;
+                    row.EmployeeAuthorizationID = User.Identity.GetUserId();
+                    row.DateAuthorization = DateTime.Now;
                     row.UserId = UserId;
 
                     db.Entry(row).State = EntityState.Modified;
@@ -103,6 +132,22 @@ namespace NetBanking.Controllers
                 }  
             }
             return View(netBankingUser);
+        }
+
+        [Authorize(Roles = "Administrador")]
+        public ActionResult HistoryRequest()
+        {
+            return View(db.NetBankingUserRequest);
+        }
+
+        [Authorize(Roles = "Cliente")]
+        public ActionResult AccUserConsult()
+        {
+            var id = User.Identity.Name;
+            var IdCard = db.NetBankingUserRequest.Where(x => x.PersonalEmail == id).FirstOrDefault().IdCard;
+            //ViewBag.User = IdCard;
+            //TODO: Solicitar a Integración/CORE las cuentas de este usuario con cédula "IdCard"
+            return View();
         }
     }
 }
