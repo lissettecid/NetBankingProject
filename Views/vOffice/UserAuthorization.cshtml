@@ -1,0 +1,105 @@
+﻿@model NetBanking.Models.NetBankingUserRequest
+
+@{
+    ViewBag.Title = "UserAuthorization";
+    Layout = "~/Views/Shared/_LayoutvOffice.cshtml";
+}
+
+<h2>UserAuthorization</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Id)
+
+    <div>
+        <h4>NetBankingUserRequest</h4>
+        <hr />
+        <table>
+            <tr>
+                <th>Cédula</th>
+                <th>:</th>
+                <td>@Html.DisplayFor(model => model.IdCard)</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <th>:</th>
+                <td>@Html.DisplayFor(model => model.Name)</td>
+            </tr>
+            <tr>
+                <th>Apellido</th>
+                <th>:</th>
+                <td>@Html.DisplayFor(model => model.LastName)</td>
+            </tr>
+            <tr>
+                <th>Fecha de Nacimiento</th>
+                <th>:</th>
+                <td>@Html.DisplayFor(model => model.BirthDate)</td>
+            </tr>
+            <tr>
+                <th>Número telefónico</th>
+                <th>:</th>
+                <td>@Html.DisplayFor(model => model.PhoneNumber)</td>
+            </tr>
+            <tr>
+                <th>Celular</th>
+                <th>:</th>
+                <td>@Html.DisplayFor(model => model.CellPhone)</td>
+            </tr>
+            <tr>
+                <th>Teléfono laboral</th>
+                <th>:</th>
+                <td>@Html.DisplayFor(model => model.WorkTel)</td>
+            </tr>
+            <tr>
+                <th>Dirección</th>
+                <th>:</th>
+                <td>@Html.DisplayFor(model => model.Address)</td>
+            </tr>
+            <tr>
+                <th>Dirección laboral</th>
+                <th>:</th>
+                <td>@Html.DisplayFor(model => model.WorkAddress)</td>
+            </tr>
+            <tr>
+                <th>Correo personal</th>
+                <th>:</th>
+                <td>@Html.DisplayFor(model => model.PersonalEmail)</td>
+            </tr>
+            <tr>
+                <th>Correo laboral</th>
+                <th>:</th>
+                <td>@Html.DisplayFor(model => model.WorkEmail)</td>
+            </tr>
+            <tr>
+                <th>Fecha de solicitud</th>
+                <th>:</th>
+                <td>@Html.DisplayFor(model => model.RequestDate)</td>
+            </tr>
+            <tr>
+                <th>Estado de Solicitud</th>
+                <th>:</th>
+                <td>
+                    @Html.EditorFor(model => model.StatusText, new { htmlAttributes = new { @class = "form-control" } })
+                </td>
+            </tr>
+            <tr>
+                <th>Comentario</th>
+                <th>:</th>
+                <td>
+                    @Html.TextAreaFor(model => model.StatusComment, new { htmlAttributes = new { @class = "form-control" } })
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Confirmar" class="btn mx-auto" style="background-color:blue; color:white" />
+        </div>
+    </div>
+}
+
+<p>
+    @Html.ActionLink("Back to List", "Authorization")
+</p>

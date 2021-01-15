@@ -39,6 +39,7 @@ namespace NetBanking.Controllers
         // GET: NetBankingUserRequests/Create
         public ActionResult Create()
         {
+            ViewBag.TitleErr = "";
             return View();
         }
 
@@ -49,7 +50,22 @@ namespace NetBanking.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,IdCard,Name,LastName,BirthDate,PhoneNumber,CellPhone,WorkTel,Address,WorkAddress,PersonalEmail,WorkEmail,RequestDate,RequestStatus,StatusComment,EmployeeAuthorizationID,DateAuthorization")] NetBankingUserRequest netBankingUserRequest)
         {
+            var IdCard = db.NetBankingUserRequest.Where(x => x.IdCard == netBankingUserRequest.IdCard).FirstOrDefault();
+            if (IdCard != null)
+            {
+                ViewBag.TitleErr = "Ya hay un usurio con esta cédula";
+                return View();
+            }
+
+            var email = db.NetBankingUserRequest.Where(x => x.PersonalEmail.Equals(netBankingUserRequest.PersonalEmail)).FirstOrDefault();
+            if (email != null)
+            {
+                ViewBag.TitleErr = "Ya tenemos un usuario con este correo";
+                return View();
+            }
+
             netBankingUserRequest.RequestDate = DateTime.Now;
+            netBankingUserRequest.StatusText = "Solicitud";
             if (ModelState.IsValid)
             {
                 db.NetBankingUserRequest.Add(netBankingUserRequest);

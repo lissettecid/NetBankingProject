@@ -32,5 +32,6 @@ namespace NetBanking.Models
         public Nullable<int> EmployeeAuthorizationID { get; set; }
         public Nullable<System.DateTime> DateAuthorization { get; set; }
         public string UserId { get; set; }
+        public string StatusText { get; set; }
     }
 }

@@ -1,0 +1,77 @@
+﻿@model IEnumerable<NetBanking.Models.NetBankingUserRequest>
+
+@{
+    ViewBag.Title = "Authorization";
+    Layout = "~/Views/Shared/_LayoutvOffice.cshtml";
+}
+
+<h2>Authorization</h2>
+<hr />
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-table mr-1"></i>
+        DataTable Example
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            <label>Cédula</label>
+                        </th>
+                        <th>
+                            <label>Nombre</label>
+                        </th>
+                        <th>
+                            <label>Apellido</label>
+                        </th>
+                        <th>
+                            <label>Correo</label>
+                        </th>
+                        <th>
+                            <label>Fecha de Solicitud</label>
+                        </th>
+                        <th>
+                            <label>Estado de Solicitud</label>
+                        </th>
+                        <th>
+
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IdCard)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LastName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PersonalEmail)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RequestDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StatusText)
+                            </td>
+                            <td>
+                                <a href="@Url.Action("UserAuthorization", "vOffice", new { id = item.Id })">
+                                    <i class="fas fa-user-edit"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
