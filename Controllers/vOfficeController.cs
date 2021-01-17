@@ -58,7 +58,6 @@ namespace NetBanking.Controllers
         //[Authorize(Roles = "Cliente")]
         public ActionResult Index()
         {
-            //ViewBag.Prueba = User.Identity.GetUserId();
             return View();
         }
 
@@ -106,7 +105,7 @@ namespace NetBanking.Controllers
                     db.SaveChanges();
                     return RedirectToAction("Authorization");
                 }
-                
+
                 RegisterViewModel rvm = new RegisterViewModel
                 {
                     Email = row.PersonalEmail,
@@ -119,7 +118,7 @@ namespace NetBanking.Controllers
                 {
                     string UserId = db.AspNetUsers.Where(x => x.Email == row.PersonalEmail).FirstOrDefault().Id;
                     await UserManager.AddToRoleAsync(UserId, "Cliente");
-                    
+
                     row.StatusText = netBankingUser.StatusText;
                     row.StatusComment = netBankingUser.StatusComment;
                     row.EmployeeAuthorizationID = User.Identity.GetUserId();
@@ -129,7 +128,7 @@ namespace NetBanking.Controllers
                     db.Entry(row).State = EntityState.Modified;
                     db.SaveChanges();
                     return RedirectToAction("Authorization");
-                }  
+                }
             }
             return View(netBankingUser);
         }
