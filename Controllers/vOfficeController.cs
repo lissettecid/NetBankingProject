@@ -66,11 +66,33 @@ namespace NetBanking.Controllers
         [Authorize(Roles = "Cliente")]
         public ActionResult CuentasPropias()
         {
+            ViewBag.Err = "";
             return View();
         }
 
         //TODO: HttPost CuentaPropia
         //Crear View Terceros, Otro Banco
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CuentasPropias([Bind(Include = "Id,IdTransact,AccIssuer,AccBeneficiary,TransactType,MoneyType,TransactDate,TransactMount,Concept,TransactState,UserId")] tblTransactions transactions)
+        {
+            if (ModelState.IsValid)
+            {
+                transactions.IdTransact = "101";
+                var id = User.Identity.GetUserId();
+                transactions.UserId = id;
+                transactions.TransactType = "cuentas propias";
+                transactions.MoneyType = "$RD";
+                transactions.TransactDate = DateTime.Now;
+                transactions.TransactState = "Pendiente";
+
+                db.tblTransactions.Add(transactions);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(transactions);
+        }
 
         [Authorize(Roles = "Administrador")]
         public ActionResult Authorization()
