@@ -13,9 +13,10 @@
         <AssociationConnector Association="BancomanNetBankingModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="BancomanNetBankingModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="BancomanNetBankingModel.AspNetUserRoles" />
-        <EntityTypeShape EntityType="BancomanNetBankingModel.tblTransactions" Width="1.5" PointX="5.375" PointY="6.75" />
         <EntityTypeShape EntityType="BancomanNetBankingModel.UserStatusActivo" Width="1.5" PointX="7.375" PointY="0.75" />
         <EntityTypeShape EntityType="BancomanNetBankingModel.NetBankingUserRequest" Width="1.5" PointX="7.375" PointY="3.75" />
+        <EntityTypeShape EntityType="BancomanNetBankingModel.tblFavoriteAcc" Width="1.5" PointX="9.375" PointY="0.75" />
+        <EntityTypeShape EntityType="BancomanNetBankingModel.tblTransactions" Width="1.5" PointX="4.875" PointY="6.5" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

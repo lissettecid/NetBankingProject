@@ -90,16 +90,27 @@
           <Property Name="DateAuthorization" Type="datetime" />
           <Property Name="UserId" Type="nvarchar" MaxLength="128" />
         </EntityType>
+        <EntityType Name="tblFavoriteAcc">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdCard" Type="nvarchar" MaxLength="13" Nullable="false" />
+          <Property Name="BeneficiaryName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AccBeneficiary" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="BeneficiaryEmail" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="AddDate" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="tblTransactions">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IdTransact" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="IdTransact" Type="nvarchar" MaxLength="15" />
           <Property Name="AccIssuer" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="AccBeneficiary" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="TransactType" Type="nvarchar" MaxLength="15" Nullable="false" />
-          <Property Name="MoneType" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="MoneyType" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="TransactDate" Type="datetime" Nullable="false" />
           <Property Name="TransactMount" Type="money" Nullable="false" />
           <Property Name="Concept" Type="nvarchar" MaxLength="50" />
@@ -178,6 +189,7 @@
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NetBankingUserRequest" EntityType="Self.NetBankingUserRequest" Schema="user" store:Type="Tables" />
+          <EntitySet Name="tblFavoriteAcc" EntityType="Self.tblFavoriteAcc" Schema="user" store:Type="Tables" />
           <EntitySet Name="tblTransactions" EntityType="Self.tblTransactions" Schema="user" store:Type="Tables" />
           <EntitySet Name="UserStatusActivo" EntityType="Self.UserStatusActivo" Schema="user" store:Type="Tables" />
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
@@ -219,9 +231,10 @@
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
-          <EntitySet Name="tblTransactions" EntityType="BancomanNetBankingModel.tblTransactions" />
           <EntitySet Name="UserStatusActivo" EntityType="BancomanNetBankingModel.UserStatusActivo" />
           <EntitySet Name="NetBankingUserRequest" EntityType="BancomanNetBankingModel.NetBankingUserRequest" />
+          <EntitySet Name="tblFavoriteAcc" EntityType="BancomanNetBankingModel.tblFavoriteAcc" />
+          <EntitySet Name="tblTransactions" EntityType="BancomanNetBankingModel.tblTransactions" />
         </EntityContainer>
         <EntityType Name="C__MigrationHistory">
           <Key>
@@ -314,22 +327,6 @@
           <End Type="BancomanNetBankingModel.AspNetRoles" Role="AspNetRoles" Multiplicity="*" />
           <End Type="BancomanNetBankingModel.AspNetUsers" Role="AspNetUsers" Multiplicity="*" />
         </Association>
-        <EntityType Name="tblTransactions">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IdTransact" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="AccIssuer" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="AccBeneficiary" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="TransactType" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="MoneType" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="TransactDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="TransactMount" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
-          <Property Name="Concept" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="TransactState" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="UserStatusActivo">
           <Key>
             <PropertyRef Name="Id" />
@@ -361,6 +358,33 @@
           <Property Name="EmployeeAuthorizationID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="DateAuthorization" Type="DateTime" Precision="3" />
           <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tblFavoriteAcc">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdCard" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="true" />
+          <Property Name="BeneficiaryName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AccBeneficiary" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="BeneficiaryEmail" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AddDate" Type="DateTime" Precision="3" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblTransactions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdTransact" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="AccIssuer" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="AccBeneficiary" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="TransactType" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="MoneyType" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TransactDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TransactMount" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="Concept" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TransactState" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -431,23 +455,6 @@
               <ScalarProperty Name="Id" ColumnName="RoleId" />
             </EndProperty>
           </AssociationSetMapping>
-          <EntitySetMapping Name="tblTransactions">
-            <EntityTypeMapping TypeName="BancomanNetBankingModel.tblTransactions">
-              <MappingFragment StoreEntitySet="tblTransactions">
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="TransactState" ColumnName="TransactState" />
-                <ScalarProperty Name="Concept" ColumnName="Concept" />
-                <ScalarProperty Name="TransactMount" ColumnName="TransactMount" />
-                <ScalarProperty Name="TransactDate" ColumnName="TransactDate" />
-                <ScalarProperty Name="MoneType" ColumnName="MoneType" />
-                <ScalarProperty Name="TransactType" ColumnName="TransactType" />
-                <ScalarProperty Name="AccBeneficiary" ColumnName="AccBeneficiary" />
-                <ScalarProperty Name="AccIssuer" ColumnName="AccIssuer" />
-                <ScalarProperty Name="IdTransact" ColumnName="IdTransact" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="UserStatusActivo">
             <EntityTypeMapping TypeName="BancomanNetBankingModel.UserStatusActivo">
               <MappingFragment StoreEntitySet="UserStatusActivo">
@@ -478,6 +485,35 @@
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="IdCard" ColumnName="IdCard" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblFavoriteAcc">
+            <EntityTypeMapping TypeName="BancomanNetBankingModel.tblFavoriteAcc">
+              <MappingFragment StoreEntitySet="tblFavoriteAcc">
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="BeneficiaryEmail" ColumnName="BeneficiaryEmail" />
+                <ScalarProperty Name="AccBeneficiary" ColumnName="AccBeneficiary" />
+                <ScalarProperty Name="BeneficiaryName" ColumnName="BeneficiaryName" />
+                <ScalarProperty Name="IdCard" ColumnName="IdCard" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblTransactions">
+            <EntityTypeMapping TypeName="BancomanNetBankingModel.tblTransactions">
+              <MappingFragment StoreEntitySet="tblTransactions">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="TransactState" ColumnName="TransactState" />
+                <ScalarProperty Name="Concept" ColumnName="Concept" />
+                <ScalarProperty Name="TransactMount" ColumnName="TransactMount" />
+                <ScalarProperty Name="TransactDate" ColumnName="TransactDate" />
+                <ScalarProperty Name="MoneyType" ColumnName="MoneyType" />
+                <ScalarProperty Name="TransactType" ColumnName="TransactType" />
+                <ScalarProperty Name="AccBeneficiary" ColumnName="AccBeneficiary" />
+                <ScalarProperty Name="AccIssuer" ColumnName="AccIssuer" />
+                <ScalarProperty Name="IdTransact" ColumnName="IdTransact" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

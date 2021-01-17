@@ -30,8 +30,9 @@ namespace NetBanking.Models
         public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
-        public virtual DbSet<tblTransactions> tblTransactions { get; set; }
         public virtual DbSet<UserStatusActivo> UserStatusActivo { get; set; }
         public virtual DbSet<NetBankingUserRequest> NetBankingUserRequest { get; set; }
+        public virtual DbSet<tblFavoriteAcc> tblFavoriteAcc { get; set; }
+        public virtual DbSet<tblTransactions> tblTransactions { get; set; }
     }
 }

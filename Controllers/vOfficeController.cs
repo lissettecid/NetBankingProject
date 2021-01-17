@@ -58,7 +58,9 @@ namespace NetBanking.Controllers
         //[Authorize(Roles = "Cliente")]
         public ActionResult Index()
         {
-            return View();
+            var id = User.Identity.Name;
+            var idCard = db.NetBankingUserRequest.Where(x => x.PersonalEmail == id).FirstOrDefault().IdCard;
+            return View(db.tblFavoriteAcc.Where(x => x.IdCard == idCard).ToList());
         }
 
         [Authorize(Roles = "Cliente")]
@@ -66,6 +68,9 @@ namespace NetBanking.Controllers
         {
             return View();
         }
+
+        //TODO: HttPost CuentaPropia
+        //Crear View Terceros, Otro Banco
 
         [Authorize(Roles = "Administrador")]
         public ActionResult Authorization()
@@ -147,6 +152,48 @@ namespace NetBanking.Controllers
             //ViewBag.User = IdCard;
             //TODO: Solicitar a Integración/CORE las cuentas de este usuario con cédula "IdCard"
             return View();
+        }
+
+        [Authorize(Roles = "Cliente")]
+        public ActionResult CreateBeneficiary()
+        {
+            ViewBag.TitleErr = "";
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateBeneficiary([Bind(Include = "Id,IdCard,BeneficiaryName,AccBeneficiary,BeneficiaryEmail,AddDate")] tblFavoriteAcc favoriteAcc)
+        {
+            var accBeneficiary = db.tblFavoriteAcc.Where(x => x.AccBeneficiary == favoriteAcc.AccBeneficiary).FirstOrDefault();
+            if (accBeneficiary != null)
+            {
+                ViewBag.TitleErr = "El número de cuenta ya está agregado como favorito";
+                return View();
+            }
+
+            var beneficiaryName = db.tblFavoriteAcc.Where(x => x.BeneficiaryName == favoriteAcc.BeneficiaryName).FirstOrDefault();
+            if (beneficiaryName != null)
+            {
+                ViewBag.TitleErr = "Este alias está ocupado. Debe cambiarlo.";
+                return View();
+            }
+
+            //TODO: Confirmar con el CORE que la cuenta existe
+            //if(no existe)
+
+            var id = User.Identity.Name;
+            var idCard = db.NetBankingUserRequest.Where(x => x.PersonalEmail == id).FirstOrDefault().IdCard;
+            favoriteAcc.IdCard = idCard;
+            favoriteAcc.AddDate = DateTime.Now;
+            if (ModelState.IsValid)
+            {
+                db.tblFavoriteAcc.Add(favoriteAcc);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(favoriteAcc);
         }
     }
 }
