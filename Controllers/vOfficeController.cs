@@ -57,6 +57,12 @@ namespace NetBanking.Controllers
         // GET: vOffice
         public ActionResult Index()
         {
+            if (User.IsInRole("Cliente"))
+            {
+                var id = User.Identity.Name;
+                var idCard = db.NetBankingUserRequest.Where(x => x.PersonalEmail == id).FirstOrDefault().IdCard;
+                return View(db.tblFavoriteAcc.Where(x => x.IdCard == idCard).ToList());
+            }
             return View();
         }
 
@@ -84,8 +90,8 @@ namespace NetBanking.Controllers
                 transactions.TransactState = "Pendiente";
 
                 db.tblTransactions.Add(transactions);
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
+                db.SaveChanges();
+                return RedirectToAction("Index");
             }
 
             return View(transactions);
@@ -123,7 +129,6 @@ namespace NetBanking.Controllers
                     row.StatusComment = netBankingUser.StatusComment;
                     row.EmployeeAuthorizationID = User.Identity.GetUserId();
                     row.DateAuthorization = DateTime.Now;
-
 
                     db.Entry(row).State = EntityState.Modified;
                     db.SaveChanges();

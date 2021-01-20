@@ -438,7 +438,6 @@
     <Content Include="Views\vOffice\AccUserConsult.cshtml" />
     <Content Include="Views\vOffice\CreateBeneficiary.cshtml" />
     <Content Include="Views\vOffice\CuentasPropias.cshtml" />
-    <Content Include="Views\vOffice\IndexAd.cshtml" />
     <Content Include="Views\vOffice\Beneficiary.cshtml" />
   </ItemGroup>
   <ItemGroup>
