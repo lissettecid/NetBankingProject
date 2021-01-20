@@ -15,9 +15,6 @@ namespace NetBanking.Controllers
     [Authorize]
     public class vOfficeController : Controller
     {
-        static ITopicClient topicClient;
-        static ISubscriptionClient subscriptionClient;
-
         private BancomanNetBankingEntities db = new BancomanNetBankingEntities();
 
         private ApplicationSignInManager _signInManager;
@@ -66,12 +63,6 @@ namespace NetBanking.Controllers
             return View(db.tblFavoriteAcc.Where(x => x.IdCard == idCard).ToList());
         }
 
-        //[Authorize(Roles = "Administrador")]
-        public ActionResult IndexAd()
-        {
-            return View();
-        }
-
         [Authorize(Roles = "Cliente")]
         public ActionResult CuentasPropias()
         {
@@ -85,17 +76,17 @@ namespace NetBanking.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CuentasPropias([Bind(Include = "Id,IdTransact,AccIssuer,AccBeneficiary,TransactType,MoneyType,TransactDate,TransactMount,Concept,TransactState,UserId")] tblTransactions transactions)
         {
-            string sbConnectionString = "Endpoint=sb://serviceprueban3.servicebus.windows.net/;SharedAccessKeyName=Transaccion-Tot;SharedAccessKey=2UKKar0wbx34AWx2abEKCUro8+mtunJM7avryCfU4po=";
-            string sbTopic = "transaccion";
-            string messageBody = string.Empty;
+            //string sbConnectionString = "Endpoint=sb://serviceprueban3.servicebus.windows.net/;SharedAccessKeyName=Transaccion-Tot;SharedAccessKey=2UKKar0wbx34AWx2abEKCUro8+mtunJM7avryCfU4po=";
+            //string sbTopic = "transaccion";
+            //string messageBody = string.Empty;
 
             //string sbConnectionString2 = "Endpoint=sb://serviceprueban3.servicebus.windows.net/;SharedAccessKeyName=EscuchoWilliam;SharedAccessKey=My3W71j+bOH+8IJXLivAGDX+uQfVyElutQGGlHN67jw=";
             //string sbTopic2 = "transaccion";
             //string sbSubscription = "EscuchoWilliam";
-            try
+            //try
+            //{
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
-                {
                     transactions.IdTransact = "101";
                     var id = User.Identity.GetUserId();
                     transactions.UserId = id;
@@ -104,12 +95,12 @@ namespace NetBanking.Controllers
                     transactions.TransactDate = DateTime.Now;
                     transactions.TransactState = "Pendiente";
 
-                    messageBody = JsonConvert.SerializeObject(transactions);
-                    topicClient = new TopicClient(sbConnectionString, sbTopic);
+                    //messageBody = JsonConvert.SerializeObject(transactions);
+                    //topicClient = new TopicClient(sbConnectionString, sbTopic);
 
-                    var message = new Message(Encoding.UTF8.GetBytes(messageBody));
+                    //var message = new Message(Encoding.UTF8.GetBytes(messageBody));
 
-                    topicClient.SendAsync(message);
+                    //topicClient.SendAsync(message);
 
                     //subscriptionClient = new SubscriptionClient(sbConnectionString2, sbTopic2, sbSubscription);
 
@@ -124,16 +115,16 @@ namespace NetBanking.Controllers
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
-            }
-            catch (Exception)
-            {
-                ViewBag.Err = "No se pudo realizar la transacción. Intente más tarde.";
-                throw;
-            }
-            finally
-            {
-                topicClient.CloseAsync();
-            }
+            //}
+            //catch (Exception)
+            //{
+            //    ViewBag.Err = "No se pudo realizar la transacción. Intente más tarde.";
+            //    throw;
+            //}
+            //finally
+            //{
+            //    topicClient.CloseAsync();
+            //}
 
 
             return View(transactions);
