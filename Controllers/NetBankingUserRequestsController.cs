@@ -51,14 +51,15 @@ namespace NetBanking.Controllers
         public ActionResult Create([Bind(Include = "Id,IdCard,Name,LastName,BirthDate,PhoneNumber,CellPhone,WorkTel,Address,WorkAddress,PersonalEmail,WorkEmail,RequestDate,RequestStatus,StatusComment,EmployeeAuthorizationID,DateAuthorization")] NetBankingUserRequest netBankingUserRequest)
         {
             var IdCard = db.NetBankingUserRequest.Where(x => x.IdCard == netBankingUserRequest.IdCard).FirstOrDefault();
-            if (IdCard != null)
+            //var statusText = db.NetBankingUserRequest.Where(x => x.IdCard == netBankingUserRequest.IdCard).FirstOrDefault().StatusText;
+            if (IdCard != null && IdCard.StatusText == "Activo")
             {
                 ViewBag.TitleErr = "Ya hay un usurio con esta cédula";
                 return View();
             }
 
             var email = db.NetBankingUserRequest.Where(x => x.PersonalEmail.Equals(netBankingUserRequest.PersonalEmail)).FirstOrDefault();
-            if (email != null)
+            if (email != null && email.StatusText == "Activo")
             {
                 ViewBag.TitleErr = "Ya tenemos un usuario con este correo";
                 return View();

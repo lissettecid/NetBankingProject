@@ -439,6 +439,7 @@
     <Content Include="Views\vOffice\CreateBeneficiary.cshtml" />
     <Content Include="Views\vOffice\CuentasPropias.cshtml" />
     <Content Include="Views\vOffice\Beneficiary.cshtml" />
+    <Content Include="Views\vOffice\UserDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

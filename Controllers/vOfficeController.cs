@@ -107,7 +107,6 @@ namespace NetBanking.Controllers
         public ActionResult UserAuthorization(int id)
         {
             var solicitante = db.NetBankingUserRequest.Find(id);
-            ViewBag.OpcList = new SelectList(db.UserStatusActivo.Where(x => x.Inicial == true), "Status", "Status", solicitante.StatusText);
             return View(solicitante);
         }
 
@@ -166,6 +165,13 @@ namespace NetBanking.Controllers
         public ActionResult HistoryRequest()
         {
             return View(db.NetBankingUserRequest);
+        }
+
+        [Authorize(Roles = "Administrador")]
+        public ActionResult UserDetails(int id)
+        {
+            var request = db.NetBankingUserRequest.Find(id);
+            return View(request);
         }
 
         [Authorize(Roles = "Cliente")]
