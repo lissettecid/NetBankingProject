@@ -1,0 +1,58 @@
+﻿@using Microsoft.AspNet.Identity
+@model IEnumerable<NetBanking.Models.tblFavoriteAcc>
+
+@{
+    ViewBag.Title = "Beneficiary";
+    Layout = "~/Views/Shared/_LayoutvOffice.cshtml";
+}
+
+@*<h1>Hola</h1>*@
+<img src="~/Image/Bancoman-escala2.png" width="300" />
+<hr />
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-table mr-1"></i>
+        Cuentas Favoritas
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            <label>Alias</label>
+                        </th>
+                        <th>
+                            <label>No. de cuenta</label>
+                        </th>
+                        <th>
+                            <label>Correo elctrónico</label>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.BeneficiaryName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AccBeneficiary)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.BeneficiaryEmail)
+                            </td>
+                            @*<td>
+                                    <a href="@Url.Action("UserAuthorization", "vOffice", new { id = item.Id })">
+                                        <i class="fas fa-user-edit"></i>
+                                    </a>
+                                </td>*@
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
