@@ -10,13 +10,10 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.Azure.ServiceBus;
-using Newtonsoft.Json;
-using System.Text;
-using System.Threading;
 
 namespace NetBanking.Controllers
 {
-    
+    static ITopicClient topicClient;
     [Authorize]
     public class vOfficeController : Controller
     {
@@ -224,4 +221,3 @@ namespace NetBanking.Controllers
         }
     }
 }
-
