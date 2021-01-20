@@ -20,9 +20,6 @@ namespace NetBanking.Controllers
     [Authorize]
     public class vOfficeController : Controller
     {
-        static ITopicClient topicClient;
-        static ISubscriptionClient subscriptionClient;
-
         private BancomanNetBankingEntities db = new BancomanNetBankingEntities();
 
         private ApplicationSignInManager _signInManager;
@@ -84,56 +81,20 @@ namespace NetBanking.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CuentasPropias([Bind(Include = "Id,IdTransact,AccIssuer,AccBeneficiary,TransactType,MoneyType,TransactDate,TransactMount,Concept,TransactState,UserId")] tblTransactions transactions)
         {
-            string sbConnectionString = "Endpoint=sb://serviceprueban3.servicebus.windows.net/;SharedAccessKeyName=Transaccion-Tot;SharedAccessKey=2UKKar0wbx34AWx2abEKCUro8+mtunJM7avryCfU4po=";
-            string sbTopic = "transaccion";
-            string messageBody = string.Empty;
-
-            //string sbConnectionString2 = "Endpoint=sb://serviceprueban3.servicebus.windows.net/;SharedAccessKeyName=EscuchoWilliam;SharedAccessKey=My3W71j+bOH+8IJXLivAGDX+uQfVyElutQGGlHN67jw=";
-            //string sbTopic2 = "transaccion";
-            //string sbSubscription = "EscuchoWilliam";
-            try
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
-                {
-                    transactions.IdTransact = "101";
-                    var id = User.Identity.GetUserId();
-                    transactions.UserId = id;
-                    transactions.TransactType = "cuentas propias";
-                    transactions.MoneyType = "$RD";
-                    transactions.TransactDate = DateTime.Now;
-                    transactions.TransactState = "Pendiente";
+                transactions.IdTransact = "101";
+                var id = User.Identity.GetUserId();
+                transactions.UserId = id;
+                transactions.TransactType = "cuentas propias";
+                transactions.MoneyType = "$RD";
+                transactions.TransactDate = DateTime.Now;
+                transactions.TransactState = "Pendiente";
 
-                    messageBody = JsonConvert.SerializeObject(transactions);
-                    topicClient = new TopicClient(sbConnectionString, sbTopic);
-
-                    var message = new Message(Encoding.UTF8.GetBytes(messageBody));
-
-                    topicClient.SendAsync(message);
-
-                    //subscriptionClient = new SubscriptionClient(sbConnectionString2, sbTopic2, sbSubscription);
-
-                    //var messageHandlerOptions = new MessageHandlerOptions(ExceptionReceivedHandler)
-                    //{
-                    //    MaxConcurrentCalls = 1,
-                    //    AutoComplete = false
-                    //};
-                    //subscriptionClient.RegisterMessageHandler(ReceiveMessagesAsync, messageHandlerOptions);
-
-                    db.tblTransactions.Add(transactions);
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
-                }
+                db.tblTransactions.Add(transactions);
+                db.SaveChanges();
+                return RedirectToAction("Index");
             }
-            catch (Exception)
-            {
-                ViewBag.Err = "No se pudo realizar la transacción. Intente más tarde.";
-                throw;
-            }
-            finally
-            {
-                topicClient.CloseAsync();
-            }
-
 
             return View(transactions);
         }
@@ -261,56 +222,6 @@ namespace NetBanking.Controllers
 
             return View(favoriteAcc);
         }
-
-        //static async Task ReceiveMessagesAsync(Message message, CancellationToken token)
-        //{
-        //    await subscriptionClient.CompleteAsync(message.SystemProperties.LockToken);
-
-        //    string reply = Encoding.UTF8.GetString(message.Body);
-
-        //    TransactionRecived transactions2 = JsonConvert.DeserializeObject<TransactionRecived>(reply,
-
-        //     new JsonSerializerSettings
-        //     {
-        //         NullValueHandling = NullValueHandling.Ignore
-        //     });
-        //}
-
-        //static Task ExceptionReceivedHandler(ExceptionReceivedEventArgs exceptionReceivedEventArgs)
-        //{
-        //    return Task.CompletedTask;
-        //}
-
-        //public class TransactionRecived
-        //{
-        //    public string IdTransact { get; set; }
-        //    public string AccIssuer { get; set; }
-        //    public string AccBeneficiary { get; set; }
-        //    public string TransactType { get; set; }
-        //    public string MoneyType { get; set; }
-        //    public DateTime TransactDate { get; set; }
-        //    public decimal TransactMount { get; set; }
-        //    public string Concept { get; set; }
-        //    public string TransactState { get; set; }
-
-        //    public TransactionRecived(string idtrans, string accissuer, string accbene, string transacttype, string moneytype, DateTime transactdate, decimal transmount, string concept, string transtate)
-        //    {
-        //        IdTransact = idtrans;
-        //        AccIssuer = accissuer;
-        //        AccBeneficiary = accbene;
-        //        TransactType = transacttype;
-        //        MoneyType = moneytype;
-        //        TransactDate = transactdate;
-        //        TransactMount = transmount;
-        //        Concept = concept;
-        //        TransactState = transtate;
-        //    }
-
-        //    public TransactionRecived()
-        //    {
-
-        //    }
-        //}
     }
 }
 
