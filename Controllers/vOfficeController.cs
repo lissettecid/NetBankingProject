@@ -9,11 +9,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using Microsoft.Azure.ServiceBus;
 
 namespace NetBanking.Controllers
 {
-    static ITopicClient topicClient;
     [Authorize]
     public class vOfficeController : Controller
     {
@@ -57,12 +55,18 @@ namespace NetBanking.Controllers
         }
 
         // GET: vOffice
-        //[Authorize(Roles = "Cliente")]
+        [Authorize(Roles = "Cliente")]
         public ActionResult Index()
         {
             var id = User.Identity.Name;
             var idCard = db.NetBankingUserRequest.Where(x => x.PersonalEmail == id).FirstOrDefault().IdCard;
             return View(db.tblFavoriteAcc.Where(x => x.IdCard == idCard).ToList());
+        }
+
+        //[Authorize(Roles = "Administrador")]
+        public ActionResult IndexAd()
+        {
+            return View();
         }
 
         [Authorize(Roles = "Cliente")]
