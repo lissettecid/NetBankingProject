@@ -100,13 +100,14 @@ namespace NetBanking.Controllers
         [Authorize(Roles = "Administrador")]
         public ActionResult Authorization()
         {
-            return View(db.NetBankingUserRequest.Where(x => x.StatusText == "Solicitud").ToList());
+            return View(db.NetBankingUserRequest.Where(x => x.StatusText.Trim() == "Solicitud").ToList());
         }
 
         [Authorize(Roles = "Administrador")]
         public ActionResult UserAuthorization(int id)
         {
             var solicitante = db.NetBankingUserRequest.Find(id);
+            ViewBag.StatusText = new SelectList(db.UserStatusActivo.Where(x => x.Inicial == true), "Status", "Status", solicitante.StatusText);
             return View(solicitante);
         }
 
@@ -117,12 +118,12 @@ namespace NetBanking.Controllers
             if (ModelState.IsValid)
             {
                 var row = db.NetBankingUserRequest.Find(netBankingUser.Id);
-                if (netBankingUser.StatusText == "Solicitud" || netBankingUser.StatusText == "Inactivo")
+                if (netBankingUser.StatusText.Trim() == "Solicitud" || netBankingUser.StatusText.Trim() == "Inactivo")
                 {
                     return RedirectToAction("Authorization");
                 }
 
-                if (netBankingUser.StatusText == "Rechazado")
+                if (netBankingUser.StatusText.Trim() == "Rechazado")
                 {
                     row.StatusText = netBankingUser.StatusText;
                     row.StatusComment = netBankingUser.StatusComment;

@@ -80,26 +80,7 @@
                 <th>Estado de Solicitud</th>
                 <th>:</th>
                 <td>
-                    @{
-                        List<SelectListItem> listItems = new List<SelectListItem>();
-                        listItems.Add(new SelectListItem
-                        {
-                            Text = "Solicitud",
-                            Value = "Solicitud"
-                        });
-                        listItems.Add(new SelectListItem
-                        {
-                            Text = "Activo",
-                            Value = "Activo"
-                        });
-                        listItems.Add(new SelectListItem
-                        {
-                            Text = "Rechazado",
-                            Value = "Rechazado"
-                        });
-                    }
-
-                    @Html.DropDownListFor(model => model.StatusText, listItems, "-- Select Status --")
+                    @Html.DropDownList("StatusText", null, htmlAttributes: new { @class = "form-control" })
                 </td>
             </tr>
             <tr>
