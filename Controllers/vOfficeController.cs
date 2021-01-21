@@ -1,11 +1,15 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Azure.ServiceBus;
 using Microsoft.Owin.Security;
 using NetBanking.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -75,6 +79,31 @@ namespace NetBanking.Controllers
 
         //TODO: HttPost CuentaPropia
         //Crear View Terceros, Otro Banco
+        #region Mi código
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult CuentasPropias([Bind(Include = "Id,IdTransact,AccIssuer,AccBeneficiary,TransactType,MoneyType,TransactDate,TransactMount,Concept,TransactState,UserId")] tblTransactions transactions)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        transactions.IdTransact = "101";
+        //        var id = User.Identity.GetUserId();
+        //        transactions.UserId = id;
+        //        transactions.TransactType = "cuentas propias";
+        //        transactions.MoneyType = "$RD";
+        //        transactions.TransactDate = DateTime.Now;
+        //        transactions.TransactState = "Pendiente";
+
+        //        db.tblTransactions.Add(transactions);
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+
+        //    return View(transactions);
+        //}
+        #endregion
+        static IQueueClient queueClientTransaccionRecibida;
+        static IQueueClient queueClieTransaccionEnviada;
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult CuentasPropias([Bind(Include = "Id,IdTransact,AccIssuer,AccBeneficiary,TransactType,MoneyType,TransactDate,TransactMount,Concept,TransactState,UserId")] tblTransactions transactions)
@@ -89,8 +118,62 @@ namespace NetBanking.Controllers
                 transactions.TransactDate = DateTime.Now;
                 transactions.TransactState = "Pendiente";
 
-                db.tblTransactions.Add(transactions);
-                db.SaveChanges();
+                string TransaccionConnectionEnviada = "Endpoint=sb://integracion.servicebus.windows.net/;SharedAccessKeyName=todo;SharedAccessKey=MoqbbZxfWFpiAo9MB9P5J3jK5Ew474d9MTyhjQQVp80=";
+                string queueTransaccionEnviada = "transaccionnet";
+
+                string messageBody2 = JsonConvert.SerializeObject(transactions);
+                queueClieTransaccionEnviada = new QueueClient(TransaccionConnectionEnviada, queueTransaccionEnviada);
+
+                var messageSend = new Message(Encoding.UTF8.GetBytes(messageBody2));
+
+                queueClieTransaccionEnviada.SendAsync(messageSend);
+
+                string TransaccionConnectionRecibir = "Endpoint=sb://integracion.servicebus.windows.net/;SharedAccessKeyName=Todo;SharedAccessKey=AHVSBlsdEUQzog7b5yJiOJh67fiUcNYJBfHbZiH2swI=";
+                string queueTransaccionRecibir = "transaccion";
+
+                try
+                {
+                    queueClientTransaccionRecibida = new QueueClient(TransaccionConnectionRecibir, queueTransaccionRecibir);
+                    var messageHandlerOptions = new MessageHandlerOptions(ExceptionReceivedHandler)
+                    {
+
+                        MaxConcurrentCalls = 1,
+                        AutoComplete = false
+                    };
+                    queueClientTransaccionRecibida.RegisterMessageHandler(ReceiveMessagesAsync, messageHandlerOptions);
+                }
+                catch (Exception)
+                {
+                }
+                finally
+                {
+                    queueClientTransaccionRecibida.CloseAsync();
+                }
+
+                async Task ReceiveMessagesAsync(Message message, CancellationToken token)
+                {
+
+                    // Crear una clase, ponerle nombre para utilizarla y ponerle los valores
+                    string reply = Encoding.UTF8.GetString(message.Body);
+                    tblTransactions transactions2 = JsonConvert.DeserializeObject<tblTransactions>(reply,
+
+                     new JsonSerializerSettings
+                     {
+                         NullValueHandling = NullValueHandling.Ignore
+                     });
+
+                    transactions2.UserId = transactions.UserId;
+
+                    db.tblTransactions.Add(transactions2);
+                    db.SaveChanges();
+                    await queueClientTransaccionRecibida.CompleteAsync(message.SystemProperties.LockToken);
+                }
+
+                Task ExceptionReceivedHandler(ExceptionReceivedEventArgs exceptionReceivedEventArgs)
+                {
+                    return Task.CompletedTask;
+                }
+
                 return RedirectToAction("Index");
             }
 
