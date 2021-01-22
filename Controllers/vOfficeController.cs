@@ -87,10 +87,8 @@ namespace NetBanking.Controllers
         //    if (ModelState.IsValid)
         //    {
         //        transactions.IdTransact = "101";
-        //        var id = User.Identity.GetUserId();
-        //        transactions.UserId = id;
         //        transactions.TransactType = "cuentas propias";
-        //        transactions.MoneyType = "$RD";
+        //        transactions.MoneyType = "DOP";
         //        transactions.TransactDate = DateTime.Now;
         //        transactions.TransactState = "Pendiente";
 
@@ -102,6 +100,8 @@ namespace NetBanking.Controllers
         //    return View(transactions);
         //}
         #endregion
+
+        #region Código Fraulin
         static IQueueClient queueClientTransaccionRecibida;
         static IQueueClient queueClieTransaccionEnviada;
         [HttpPost]
@@ -143,11 +143,12 @@ namespace NetBanking.Controllers
                 }
                 finally
                 {
-                    
+
                 }
 
                 async Task ReceiveMessagesAsync(Message message, CancellationToken token)
                 {
+                    await queueClientTransaccionRecibida.CompleteAsync(message.SystemProperties.LockToken);
                     string reply = Encoding.UTF8.GetString(message.Body);
                     tblTransactions transactions2 = JsonConvert.DeserializeObject<tblTransactions>(reply,
 
@@ -156,9 +157,15 @@ namespace NetBanking.Controllers
                          NullValueHandling = NullValueHandling.Ignore
                      });
 
-                    await queueClientTransaccionRecibida.CompleteAsync(message.SystemProperties.LockToken);
-                    db.tblTransactions.Add(transactions2);
-                    db.SaveChanges();
+                    if (transactions2.TransactState.Trim() == "Procesado" || transactions2.TransactState.Trim() == "Procesando")
+                    {
+                        db.tblTransactions.Add(transactions2);
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        ViewBag.Err = "No se pudo realizar la transacción";
+                    }
                 }
 
                 Task ExceptionReceivedHandler(ExceptionReceivedEventArgs exceptionReceivedEventArgs)
@@ -171,6 +178,7 @@ namespace NetBanking.Controllers
 
             return View(transactions);
         }
+        #endregion
 
         [Authorize(Roles = "Cliente")]
         public ActionResult ATerceros()
@@ -179,13 +187,36 @@ namespace NetBanking.Controllers
             return View();
         }
 
+        #region Mi código
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult ATerceros([Bind(Include = "Id,IdTransact,AccIssuer,AccBeneficiary,TransactType,MoneyType,TransactDate,TransactMount,Concept,TransactState,UserId")] tblTransactions transactions)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        transactions.IdTransact = "102";
+        //        transactions.TransactType = "A terceros";
+        //        transactions.MoneyType = "DOP";
+        //        transactions.TransactDate = DateTime.Now;
+        //        transactions.TransactState = "Pendiente";
+
+        //        db.tblTransactions.Add(transactions);
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+
+        //    return View(transactions);
+        //}
+        #endregion
+
+        #region Código Fraulin
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ATerceros([Bind(Include = "Id,IdTransact,AccIssuer,AccBeneficiary,TransactType,MoneyType,TransactDate,TransactMount,Concept,TransactState")] tblTransactions transactions)
         {
             if (ModelState.IsValid)
             {
-                transactions.TransactType = "A terceros";
+                transactions.TransactType = "A Terceros";
                 transactions.MoneyType = "DOP";
                 transactions.TransactDate = DateTime.Now;
                 transactions.TransactState = "Pendiente";
@@ -200,15 +231,14 @@ namespace NetBanking.Controllers
 
                 queueClieTransaccionEnviada.SendAsync(messageSend);
 
-                string CustomerString = "Endpoint=sb://integracion.servicebus.windows.net/;SharedAccessKeyName=todo;SharedAccessKey=WQ+k4PSZ467Gvz893UqTT/wFhM1TpGlgzI4XJhR4MC8=";
-                string queue = "transaccioncore";
+                string CustomerString = "Endpoint=sb://integracion.servicebus.windows.net/;SharedAccessKeyName=todo;SharedAccessKey=g3a+bsOoenW1fQkTzU9wvO3+JozWdb9EKf8ZohU/HEM=";
+                string queue = "transactioncore";
 
                 try
                 {
                     queueClientTransaccionRecibida = new QueueClient(CustomerString, queue);
                     var messageHandlerOptions = new MessageHandlerOptions(ExceptionReceivedHandler)
                     {
-
                         MaxConcurrentCalls = 1,
                         AutoComplete = false
                     };
@@ -219,26 +249,29 @@ namespace NetBanking.Controllers
                 }
                 finally
                 {
-                    
+
                 }
 
                 async Task ReceiveMessagesAsync(Message message, CancellationToken token)
                 {
+                    await queueClientTransaccionRecibida.CompleteAsync(message.SystemProperties.LockToken);
                     string reply = Encoding.UTF8.GetString(message.Body);
                     tblTransactions transactions2 = JsonConvert.DeserializeObject<tblTransactions>(reply,
 
-                    new JsonSerializerSettings
-                    {
-                        NullValueHandling = NullValueHandling.Ignore
-                    });
+                     new JsonSerializerSettings
+                     {
+                         NullValueHandling = NullValueHandling.Ignore
+                     });
 
-                    //if (transactions2.TransactState.Trim() == "Procesado")
-                    //{
+                    if (transactions2.TransactState.Trim() == "Procesado" || transactions2.TransactState.Trim() == "Procesando")
+                    {
                         db.tblTransactions.Add(transactions2);
                         db.SaveChanges();
-                    //}
-                    
-                    await queueClientTransaccionRecibida.CompleteAsync(message.SystemProperties.LockToken);
+                    }
+                    else
+                    {
+                        ViewBag.Err = "No se pudo realizar la transacción";
+                    }
                 }
 
                 Task ExceptionReceivedHandler(ExceptionReceivedEventArgs exceptionReceivedEventArgs)
@@ -251,6 +284,7 @@ namespace NetBanking.Controllers
 
             return View(transactions);
         }
+        #endregion
 
         [Authorize(Roles = "Administrador")]
         public ActionResult Authorization()
@@ -330,6 +364,17 @@ namespace NetBanking.Controllers
             return View(request);
         }
 
+        #region Mi código
+        //[Authorize(Roles = "Cliente")]
+        //public ActionResult AccUserConsult()
+        //{
+        //    var id = User.Identity.Name;
+        //    var idCard = db.NetBankingUserRequest.Where(x => x.PersonalEmail == id).FirstOrDefault().IdCard.Trim();
+        //    return View(db.tblAccounts.Where(x => x.IdCard == idCard).ToList());
+        //}
+        #endregion
+
+        #region Código Fraulin
         static IQueueClient queueCustomerClient;
         static IQueueClient queuecedulaClient;
         [Authorize(Roles = "Cliente")]
@@ -374,6 +419,7 @@ namespace NetBanking.Controllers
 
             async Task ReceiveMessagesAsync(Microsoft.Azure.ServiceBus.Message message, CancellationToken token)
             {
+                await queuecedulaClient.CompleteAsync(message.SystemProperties.LockToken);
                 string reply = Encoding.UTF8.GetString(message.Body);
                 tblAccounts accounts = JsonConvert.DeserializeObject<tblAccounts>(reply,
 
@@ -381,9 +427,9 @@ namespace NetBanking.Controllers
                 {
                     NullValueHandling = NullValueHandling.Ignore
                 });
+
                 db.tblAccounts.Add(accounts);
                 db.SaveChanges();
-                await queuecedulaClient.CompleteAsync(message.SystemProperties.LockToken);
             }
 
             Task ExceptionReceivedHandler(ExceptionReceivedEventArgs exceptionReceivedEventArgs)
@@ -394,6 +440,7 @@ namespace NetBanking.Controllers
 
             return View(db.tblAccounts.Where(x => x.IdCard == idCard).ToList());
         }
+        #endregion
 
         #region Actualizar
         //[HttpPost]
