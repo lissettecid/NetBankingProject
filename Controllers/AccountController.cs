@@ -15,6 +15,7 @@ namespace NetBanking.Controllers
     [Authorize]
     public class AccountController : Controller
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -80,6 +81,7 @@ namespace NetBanking.Controllers
             {
                 case SignInStatus.Success:
                     //return RedirectToLocal(returnUrl);
+                    log.Info($"El usuario {model.Email} acaba de loggearse");
                     return RedirectToAction("Index","vOffice");
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -88,6 +90,7 @@ namespace NetBanking.Controllers
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Invalid login attempt.");
+                    log.Error($"Invalid login attempt.");
                     return View(model);
             }
         }

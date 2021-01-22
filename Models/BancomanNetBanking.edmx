@@ -66,6 +66,18 @@
           <Property Name="AccessFailedCount" Type="int" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
         </EntityType>
+        <EntityType Name="Log">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="Thread" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Level" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Logger" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Message" Type="varchar" MaxLength="4000" Nullable="false" />
+          <Property Name="Exception" Type="varchar" MaxLength="2000" />
+        </EntityType>
         <EntityType Name="NetBankingUserRequest">
           <Key>
             <PropertyRef Name="Id" />
@@ -202,6 +214,7 @@
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NetBankingUserRequest" EntityType="Self.NetBankingUserRequest" Schema="user" store:Type="Tables" />
           <EntitySet Name="tblAccounts" EntityType="Self.tblAccounts" Schema="user" store:Type="Tables" />
           <EntitySet Name="tblFavoriteAcc" EntityType="Self.tblFavoriteAcc" Schema="user" store:Type="Tables" />
@@ -251,6 +264,7 @@
           <EntitySet Name="tblFavoriteAcc" EntityType="BancomanNetBankingModel.tblFavoriteAcc" />
           <EntitySet Name="tblAccounts" EntityType="BancomanNetBankingModel.tblAccounts" />
           <EntitySet Name="tblTransactions" EntityType="BancomanNetBankingModel.tblTransactions" />
+          <EntitySet Name="Log" EntityType="BancomanNetBankingModel.Log" />
         </EntityContainer>
         <EntityType Name="C__MigrationHistory">
           <Key>
@@ -416,6 +430,18 @@
           <Property Name="Concept" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="TransactState" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="Log">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Thread" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Level" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Logger" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="Exception" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -559,6 +585,19 @@
                 <ScalarProperty Name="AccBeneficiary" ColumnName="AccBeneficiary" />
                 <ScalarProperty Name="AccIssuer" ColumnName="AccIssuer" />
                 <ScalarProperty Name="IdTransact" ColumnName="IdTransact" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Log">
+            <EntityTypeMapping TypeName="BancomanNetBankingModel.Log">
+              <MappingFragment StoreEntitySet="Log">
+                <ScalarProperty Name="Exception" ColumnName="Exception" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="Logger" ColumnName="Logger" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="Thread" ColumnName="Thread" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

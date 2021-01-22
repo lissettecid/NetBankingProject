@@ -35,5 +35,6 @@ namespace NetBanking.Models
         public virtual DbSet<tblFavoriteAcc> tblFavoriteAcc { get; set; }
         public virtual DbSet<tblAccounts> tblAccounts { get; set; }
         public virtual DbSet<tblTransactions> tblTransactions { get; set; }
+        public virtual DbSet<Log> Log { get; set; }
     }
 }

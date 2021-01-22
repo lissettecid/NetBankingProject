@@ -19,6 +19,7 @@ namespace NetBanking.Controllers
     [Authorize]
     public class vOfficeController : Controller
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private BancomanNetBankingEntities db = new BancomanNetBankingEntities();
 
         private ApplicationSignInManager _signInManager;
@@ -161,6 +162,9 @@ namespace NetBanking.Controllers
                     {
                         db.tblTransactions.Add(transactions2);
                         db.SaveChanges();
+                        var id = User.Identity.Name;
+                        var idCard = db.NetBankingUserRequest.Where(x => x.PersonalEmail == id).FirstOrDefault().PersonalEmail;
+                        log.Info($"El usuario {idCard} ha hecho un transacción.");
                     }
                     else
                     {
@@ -267,6 +271,9 @@ namespace NetBanking.Controllers
                     {
                         db.tblTransactions.Add(transactions2);
                         db.SaveChanges();
+                        var id = User.Identity.Name;
+                        var idCard = db.NetBankingUserRequest.Where(x => x.PersonalEmail == id).FirstOrDefault().PersonalEmail;
+                        log.Info($"El usuario {idCard} ha hecho un transacción.");
                     }
                     else
                     {
@@ -427,9 +434,18 @@ namespace NetBanking.Controllers
                 {
                     NullValueHandling = NullValueHandling.Ignore
                 });
+                var ifExists = db.tblAccounts.Where(x => x.Accountnumber == accounts.Accountnumber && x.IdCard == accounts.IdCard).FirstOrDefault();
+                if (ifExists == null)
+                {
+                    db.tblAccounts.Add(accounts);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    db.Entry(ifExists).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
 
-                db.tblAccounts.Add(accounts);
-                db.SaveChanges();
             }
 
             Task ExceptionReceivedHandler(ExceptionReceivedEventArgs exceptionReceivedEventArgs)
@@ -498,6 +514,7 @@ namespace NetBanking.Controllers
             {
                 db.tblFavoriteAcc.Add(favoriteAcc);
                 db.SaveChanges();
+                log.Info($"El usuario de cédula {favoriteAcc.IdCard}, acaba de agregar un beneficiario");
                 return RedirectToAction("Index");
             }
 

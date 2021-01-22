@@ -12,6 +12,7 @@ namespace NetBanking.Controllers
 {
     public class NetBankingUserRequestsController : Controller
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private BancomanNetBankingEntities db = new BancomanNetBankingEntities();
 
         // GET: NetBankingUserRequests
@@ -51,7 +52,7 @@ namespace NetBanking.Controllers
         public ActionResult Create([Bind(Include = "Id,IdCard,Name,LastName,BirthDate,PhoneNumber,CellPhone,WorkTel,Address,WorkAddress,PersonalEmail,WorkEmail,RequestDate,RequestStatus,StatusComment,EmployeeAuthorizationID,DateAuthorization")] NetBankingUserRequest netBankingUserRequest)
         {
             var IdCard = db.NetBankingUserRequest.Where(x => x.IdCard == netBankingUserRequest.IdCard).FirstOrDefault();
-            //var statusText = db.NetBankingUserRequest.Where(x => x.IdCard == netBankingUserRequest.IdCard).FirstOrDefault().StatusText;
+            
             if (IdCard != null && IdCard.StatusText == "Activo")
             {
                 ViewBag.TitleErr = "Ya hay un usurio con esta cédula";
@@ -71,6 +72,7 @@ namespace NetBanking.Controllers
             {
                 db.NetBankingUserRequest.Add(netBankingUserRequest);
                 db.SaveChanges();
+                log.Info($"El cliente de cédula {IdCard.IdCard} ha hecho una solicitud");
                 return RedirectToAction("../Home/Index");
             }
 
