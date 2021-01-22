@@ -12,17 +12,17 @@ namespace NetBanking.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class tblTransactions
+    public partial class tblAccounts
     {
         public int Id { get; set; }
-        public string IdTransact { get; set; }
-        public string AccIssuer { get; set; }
-        public string AccBeneficiary { get; set; }
-        public string TransactType { get; set; }
+        public string IdCard { get; set; }
+        public string Accountnumber { get; set; }
+        public string AccountType { get; set; }
         public string MoneyType { get; set; }
-        public System.DateTime TransactDate { get; set; }
-        public decimal TransactMount { get; set; }
-        public string Concept { get; set; }
-        public string TransactState { get; set; }
+        public decimal Initial_Balance { get; set; }
+        public decimal Actual_Balance { get; set; }
+        public decimal Disponible_Balance { get; set; }
+        public decimal TotalTransition { get; set; }
+        public System.DateTime LastCut { get; set; }
     }
 }

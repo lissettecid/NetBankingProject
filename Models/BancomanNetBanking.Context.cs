@@ -33,6 +33,7 @@ namespace NetBanking.Models
         public virtual DbSet<UserStatusActivo> UserStatusActivo { get; set; }
         public virtual DbSet<NetBankingUserRequest> NetBankingUserRequest { get; set; }
         public virtual DbSet<tblFavoriteAcc> tblFavoriteAcc { get; set; }
+        public virtual DbSet<tblAccounts> tblAccounts { get; set; }
         public virtual DbSet<tblTransactions> tblTransactions { get; set; }
     }
 }

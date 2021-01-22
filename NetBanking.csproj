@@ -291,6 +291,9 @@
     <Compile Include="Models\NetBankingUserRequest.cs">
       <DependentUpon>BancomanNetBanking.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tblAccounts.cs">
+      <DependentUpon>BancomanNetBanking.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tblFavoriteAcc.cs">
       <DependentUpon>BancomanNetBanking.tt</DependentUpon>
     </Compile>
@@ -511,11 +514,13 @@
     <Content Include="Views\vOffice\Authorization.cshtml" />
     <Content Include="Views\vOffice\UserAuthorization.cshtml" />
     <Content Include="Views\vOffice\HistoryRequest.cshtml" />
-    <Content Include="Views\vOffice\AccUserConsult.cshtml" />
     <Content Include="Views\vOffice\CreateBeneficiary.cshtml" />
     <Content Include="Views\vOffice\CuentasPropias.cshtml" />
     <Content Include="Views\vOffice\Beneficiary.cshtml" />
     <Content Include="Views\vOffice\UserDetails.cshtml" />
+    <Content Include="Views\vOffice\AccUserConsult.cshtml" />
+    <Content Include="Views\vOffice\AccDetails.cshtml" />
+    <Content Include="Views\vOffice\ATerceros.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

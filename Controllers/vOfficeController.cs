@@ -106,13 +106,11 @@ namespace NetBanking.Controllers
         static IQueueClient queueClieTransaccionEnviada;
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CuentasPropias([Bind(Include = "Id,IdTransact,AccIssuer,AccBeneficiary,TransactType,MoneyType,TransactDate,TransactMount,Concept,TransactState,UserId")] tblTransactions transactions)
+        public ActionResult CuentasPropias([Bind(Include = "Id,IdTransact,AccIssuer,AccBeneficiary,TransactType,MoneyType,TransactDate,TransactMount,Concept,TransactState")] tblTransactions transactions)
         {
             if (ModelState.IsValid)
             {
                 transactions.IdTransact = "101";
-                var id = User.Identity.GetUserId();
-                transactions.UserId = id;
                 transactions.TransactType = "cuentas propias";
                 transactions.MoneyType = "$RD";
                 transactions.TransactDate = DateTime.Now;
@@ -152,8 +150,6 @@ namespace NetBanking.Controllers
 
                 async Task ReceiveMessagesAsync(Message message, CancellationToken token)
                 {
-
-                    // Crear una clase, ponerle nombre para utilizarla y ponerle los valores
                     string reply = Encoding.UTF8.GetString(message.Body);
                     tblTransactions transactions2 = JsonConvert.DeserializeObject<tblTransactions>(reply,
 
@@ -162,7 +158,82 @@ namespace NetBanking.Controllers
                          NullValueHandling = NullValueHandling.Ignore
                      });
 
-                    transactions2.UserId = transactions.UserId;
+                    db.tblTransactions.Add(transactions2);
+                    db.SaveChanges();
+                    await queueClientTransaccionRecibida.CompleteAsync(message.SystemProperties.LockToken);
+                }
+
+                Task ExceptionReceivedHandler(ExceptionReceivedEventArgs exceptionReceivedEventArgs)
+                {
+                    return Task.CompletedTask;
+                }
+
+                return RedirectToAction("Index");
+            }
+
+            return View(transactions);
+        }
+
+        [Authorize(Roles = "Cliente")]
+        public ActionResult ATerceros()
+        {
+            ViewBag.Err = "";
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ATerceros([Bind(Include = "Id,IdTransact,AccIssuer,AccBeneficiary,TransactType,MoneyType,TransactDate,TransactMount,Concept,TransactState")] tblTransactions transactions)
+        {
+            if (ModelState.IsValid)
+            {
+                transactions.IdTransact = "102";
+                transactions.TransactType = "A terceros";
+                transactions.MoneyType = "DOP";
+                transactions.TransactDate = DateTime.Now;
+                transactions.TransactState = "Pendiente";
+
+                string TransaccionConnectionEnviada = "Endpoint=sb://integracion.servicebus.windows.net/;SharedAccessKeyName=todo;SharedAccessKey=MoqbbZxfWFpiAo9MB9P5J3jK5Ew474d9MTyhjQQVp80=";
+                string queueTransaccionEnviada = "transaccionnet";
+
+                string messageBody2 = JsonConvert.SerializeObject(transactions);
+                queueClieTransaccionEnviada = new QueueClient(TransaccionConnectionEnviada, queueTransaccionEnviada);
+
+                var messageSend = new Message(Encoding.UTF8.GetBytes(messageBody2));
+
+                queueClieTransaccionEnviada.SendAsync(messageSend);
+
+                string TransaccionConnectionRecibir = "Endpoint=sb://integracion.servicebus.windows.net/;SharedAccessKeyName=Todo;SharedAccessKey=AHVSBlsdEUQzog7b5yJiOJh67fiUcNYJBfHbZiH2swI=";
+                string queueTransaccionRecibir = "transaccion";
+
+                try
+                {
+                    queueClientTransaccionRecibida = new QueueClient(TransaccionConnectionRecibir, queueTransaccionRecibir);
+                    var messageHandlerOptions = new MessageHandlerOptions(ExceptionReceivedHandler)
+                    {
+
+                        MaxConcurrentCalls = 1,
+                        AutoComplete = false
+                    };
+                    queueClientTransaccionRecibida.RegisterMessageHandler(ReceiveMessagesAsync, messageHandlerOptions);
+                }
+                catch (Exception)
+                {
+                }
+                finally
+                {
+                    queueClientTransaccionRecibida.CloseAsync();
+                }
+
+                async Task ReceiveMessagesAsync(Message message, CancellationToken token)
+                {
+                    string reply = Encoding.UTF8.GetString(message.Body);
+                    tblTransactions transactions2 = JsonConvert.DeserializeObject<tblTransactions>(reply,
+
+                     new JsonSerializerSettings
+                     {
+                         NullValueHandling = NullValueHandling.Ignore
+                     });
 
                     db.tblTransactions.Add(transactions2);
                     db.SaveChanges();
@@ -261,11 +332,32 @@ namespace NetBanking.Controllers
         [Authorize(Roles = "Cliente")]
         public ActionResult AccUserConsult()
         {
+            ViewBag.Actualizar = "";
             var id = User.Identity.Name;
-            var IdCard = db.NetBankingUserRequest.Where(x => x.PersonalEmail == id).FirstOrDefault().IdCard;
+            var idCard = db.NetBankingUserRequest.Where(x => x.PersonalEmail == id).FirstOrDefault().IdCard;
             //ViewBag.User = IdCard;
             //TODO: Solicitar a Integración/CORE las cuentas de este usuario con cédula "IdCard"
-            return View();
+            return View(db.tblAccounts.Where(x => x.IdCard == idCard).ToList());
+        }
+
+        #region Actualizar
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult AccUserConsult(tblAccounts accounts)
+        //{
+        //    var id = User.Identity.Name;
+        //    var idCard = db.NetBankingUserRequest.Where(x => x.PersonalEmail == id).FirstOrDefault().IdCard;
+        //    //TODO: Pedir al CORE Actualizar la tabla de cuentas
+        //    ViewBag.Actualizar = "Actualizado";
+        //    return View(db.tblAccounts.Where(x => x.IdCard == idCard).ToList());
+        //}
+        #endregion
+
+        [Authorize(Roles = "Cliente")]
+        public ActionResult AccDetails(int id)
+        {
+            var account = db.tblAccounts.Find(id);
+            return View(account);
         }
 
         [Authorize(Roles = "Cliente")]

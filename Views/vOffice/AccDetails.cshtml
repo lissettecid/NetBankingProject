@@ -1,0 +1,51 @@
+﻿@model NetBanking.Models.tblAccounts
+
+@{
+    ViewBag.Title = "UserDetails";
+    Layout = "~/Views/Shared/_LayoutvOffice.cshtml";
+}
+
+<h2>Detalles de la Cuenta</h2>
+
+<div>
+    <hr />
+    <table>
+        <tr>
+            <th>Cuenta</th>
+            <th>:</th>
+            <td>@Html.DisplayFor(model => model.Accountnumber)</td>
+        </tr>
+        <tr>
+            <th>Tipo de cuenta</th>
+            <th>:</th>
+            <td>@Html.DisplayFor(model => model.AccountType)</td>
+        </tr>
+        <tr>
+            <th>Moneda</th>
+            <th>:</th>
+            <td>@Html.DisplayFor(model => model.MoneyType)</td>
+        </tr>
+        <tr>
+            <th>Balance Actual</th>
+            <th>:</th>
+            <td>@Html.DisplayFor(model => model.Actual_Balance)</td>
+        </tr>
+        <tr>
+            <th>Balance Disponible</th>
+            <th>:</th>
+            <td>@Html.DisplayFor(model => model.Disponible_Balance)</td>
+        </tr>
+        <tr>
+            <th>Último Corte</th>
+            <th>:</th>
+            <td>@Html.DisplayFor(model => model.LastCut)</td>
+        </tr>
+    </table>
+</div>
+
+<p>
+
+</p>
+<p>
+    @Html.ActionLink("Cuentas", "AccUserConsult")
+</p>

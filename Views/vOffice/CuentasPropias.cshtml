@@ -5,14 +5,14 @@
     Layout = "~/Views/Shared/_LayoutvOffice.cshtml";
 }
 
-<h2>CuentasPropias</h2>
+<h2>Transferencias</h2>
 
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>tblTransactions</h4>
+        <h4>Transferencias cuenta a cuenta</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             <div class="form-group">
@@ -57,9 +57,9 @@
                     <input type="submit" value="Confirmar" class="btn btn-primary" />
                 </div>
             </div>
-        </div>
-        }
+    </div>
+ }
 
-        <div>
-            @Html.ActionLink("Cuentas favoritas", "Index")
-        </div>
+<div>
+    @Html.ActionLink("Cuentas favoritas", "Index")
+</div>
