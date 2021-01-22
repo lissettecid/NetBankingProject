@@ -110,31 +110,29 @@ namespace NetBanking.Controllers
         {
             if (ModelState.IsValid)
             {
-                transactions.IdTransact = "101";
                 transactions.TransactType = "cuentas propias";
-                transactions.MoneyType = "$RD";
+                transactions.MoneyType = "DOP";
                 transactions.TransactDate = DateTime.Now;
                 transactions.TransactState = "Pendiente";
 
-                string TransaccionConnectionEnviada = "Endpoint=sb://integracion.servicebus.windows.net/;SharedAccessKeyName=todo;SharedAccessKey=MoqbbZxfWFpiAo9MB9P5J3jK5Ew474d9MTyhjQQVp80=";
-                string queueTransaccionEnviada = "transaccionnet";
+                string transaccionnetString = "Endpoint=sb://integracion.servicebus.windows.net/;SharedAccessKeyName=todo;SharedAccessKey=MoqbbZxfWFpiAo9MB9P5J3jK5Ew474d9MTyhjQQVp80=";
+                string queuetransaccionet = "transaccionnet";
 
                 string messageBody2 = JsonConvert.SerializeObject(transactions);
-                queueClieTransaccionEnviada = new QueueClient(TransaccionConnectionEnviada, queueTransaccionEnviada);
+                queueClieTransaccionEnviada = new QueueClient(transaccionnetString, queuetransaccionet);
 
                 var messageSend = new Message(Encoding.UTF8.GetBytes(messageBody2));
 
                 queueClieTransaccionEnviada.SendAsync(messageSend);
 
-                string TransaccionConnectionRecibir = "Endpoint=sb://integracion.servicebus.windows.net/;SharedAccessKeyName=Todo;SharedAccessKey=AHVSBlsdEUQzog7b5yJiOJh67fiUcNYJBfHbZiH2swI=";
-                string queueTransaccionRecibir = "transaccion";
+                string CustomerString = "Endpoint=sb://integracion.servicebus.windows.net/;SharedAccessKeyName=todo;SharedAccessKey=g3a+bsOoenW1fQkTzU9wvO3+JozWdb9EKf8ZohU/HEM=";
+                string queue = "transactioncore";
 
                 try
                 {
-                    queueClientTransaccionRecibida = new QueueClient(TransaccionConnectionRecibir, queueTransaccionRecibir);
+                    queueClientTransaccionRecibida = new QueueClient(CustomerString, queue);
                     var messageHandlerOptions = new MessageHandlerOptions(ExceptionReceivedHandler)
                     {
-
                         MaxConcurrentCalls = 1,
                         AutoComplete = false
                     };
@@ -145,7 +143,7 @@ namespace NetBanking.Controllers
                 }
                 finally
                 {
-                    queueClientTransaccionRecibida.CloseAsync();
+                    
                 }
 
                 async Task ReceiveMessagesAsync(Message message, CancellationToken token)
@@ -158,9 +156,9 @@ namespace NetBanking.Controllers
                          NullValueHandling = NullValueHandling.Ignore
                      });
 
+                    await queueClientTransaccionRecibida.CompleteAsync(message.SystemProperties.LockToken);
                     db.tblTransactions.Add(transactions2);
                     db.SaveChanges();
-                    await queueClientTransaccionRecibida.CompleteAsync(message.SystemProperties.LockToken);
                 }
 
                 Task ExceptionReceivedHandler(ExceptionReceivedEventArgs exceptionReceivedEventArgs)
@@ -187,28 +185,27 @@ namespace NetBanking.Controllers
         {
             if (ModelState.IsValid)
             {
-                transactions.IdTransact = "102";
                 transactions.TransactType = "A terceros";
                 transactions.MoneyType = "DOP";
                 transactions.TransactDate = DateTime.Now;
                 transactions.TransactState = "Pendiente";
 
-                string TransaccionConnectionEnviada = "Endpoint=sb://integracion.servicebus.windows.net/;SharedAccessKeyName=todo;SharedAccessKey=MoqbbZxfWFpiAo9MB9P5J3jK5Ew474d9MTyhjQQVp80=";
-                string queueTransaccionEnviada = "transaccionnet";
+                string transaccionnetString = "Endpoint=sb://integracion.servicebus.windows.net/;SharedAccessKeyName=todo;SharedAccessKey=MoqbbZxfWFpiAo9MB9P5J3jK5Ew474d9MTyhjQQVp80=";
+                string queuetransaccionet = "transaccionnet";
 
                 string messageBody2 = JsonConvert.SerializeObject(transactions);
-                queueClieTransaccionEnviada = new QueueClient(TransaccionConnectionEnviada, queueTransaccionEnviada);
+                queueClieTransaccionEnviada = new QueueClient(transaccionnetString, queuetransaccionet);
 
                 var messageSend = new Message(Encoding.UTF8.GetBytes(messageBody2));
 
                 queueClieTransaccionEnviada.SendAsync(messageSend);
 
-                string TransaccionConnectionRecibir = "Endpoint=sb://integracion.servicebus.windows.net/;SharedAccessKeyName=Todo;SharedAccessKey=AHVSBlsdEUQzog7b5yJiOJh67fiUcNYJBfHbZiH2swI=";
-                string queueTransaccionRecibir = "transaccion";
+                string CustomerString = "Endpoint=sb://integracion.servicebus.windows.net/;SharedAccessKeyName=todo;SharedAccessKey=WQ+k4PSZ467Gvz893UqTT/wFhM1TpGlgzI4XJhR4MC8=";
+                string queue = "transaccioncore";
 
                 try
                 {
-                    queueClientTransaccionRecibida = new QueueClient(TransaccionConnectionRecibir, queueTransaccionRecibir);
+                    queueClientTransaccionRecibida = new QueueClient(CustomerString, queue);
                     var messageHandlerOptions = new MessageHandlerOptions(ExceptionReceivedHandler)
                     {
 
@@ -222,7 +219,7 @@ namespace NetBanking.Controllers
                 }
                 finally
                 {
-                    queueClientTransaccionRecibida.CloseAsync();
+                    
                 }
 
                 async Task ReceiveMessagesAsync(Message message, CancellationToken token)
@@ -230,13 +227,17 @@ namespace NetBanking.Controllers
                     string reply = Encoding.UTF8.GetString(message.Body);
                     tblTransactions transactions2 = JsonConvert.DeserializeObject<tblTransactions>(reply,
 
-                     new JsonSerializerSettings
-                     {
-                         NullValueHandling = NullValueHandling.Ignore
-                     });
+                    new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore
+                    });
 
-                    db.tblTransactions.Add(transactions2);
-                    db.SaveChanges();
+                    //if (transactions2.TransactState.Trim() == "Procesado")
+                    //{
+                        db.tblTransactions.Add(transactions2);
+                        db.SaveChanges();
+                    //}
+                    
                     await queueClientTransaccionRecibida.CompleteAsync(message.SystemProperties.LockToken);
                 }
 
@@ -329,14 +330,68 @@ namespace NetBanking.Controllers
             return View(request);
         }
 
+        static IQueueClient queueCustomerClient;
+        static IQueueClient queuecedulaClient;
         [Authorize(Roles = "Cliente")]
         public ActionResult AccUserConsult()
         {
             ViewBag.Actualizar = "";
-            var id = User.Identity.Name;
-            var idCard = db.NetBankingUserRequest.Where(x => x.PersonalEmail == id).FirstOrDefault().IdCard;
-            //ViewBag.User = IdCard;
-            //TODO: Solicitar a Integración/CORE las cuentas de este usuario con cédula "IdCard"
+            //var id = User.Identity.Name;
+            var idCard = "550";/*db.NetBankingUserRequest.Where(x => x.PersonalEmail == id).FirstOrDefault().IdCard.Trim();*/
+            string cedulaString = "Endpoint=sb://integracion.servicebus.windows.net/;SharedAccessKeyName=todo;SharedAccessKey=RCP3GyGxzKFJAsywsh4urvs/bSVanEzNY5RPpAlGAdQ=";
+            string queuetcedula = "cedulanet";
+            var messageBody = JsonConvert.SerializeObject(idCard);
+            queueCustomerClient = new QueueClient(cedulaString, queuetcedula);
+
+            var message2 = new Microsoft.Azure.ServiceBus.Message(Encoding.UTF8.GetBytes(messageBody));
+
+
+            queueCustomerClient.SendAsync(message2);
+
+            string cedulaStringrecived = "Endpoint=sb://integracion.servicebus.windows.net/;SharedAccessKeyName=todo;SharedAccessKey=H4GLh/Odbha5Rpy35pPhXImZvd/5J2Lx7onkTCMib30=";
+            string queuecedularecived = "ceudlacore";
+
+            try
+            {
+                queuecedulaClient = new QueueClient(cedulaStringrecived, queuecedularecived);
+
+                var messageHandlerOptions = new MessageHandlerOptions(ExceptionReceivedHandler)
+                {
+                    MaxConcurrentCalls = 1,
+                    AutoComplete = false
+                };
+                queuecedulaClient.RegisterMessageHandler(ReceiveMessagesAsync, messageHandlerOptions);
+
+            }
+            catch (Exception)
+            {
+
+            }
+            finally
+            {
+
+            }
+
+            async Task ReceiveMessagesAsync(Microsoft.Azure.ServiceBus.Message message, CancellationToken token)
+            {
+                string reply = Encoding.UTF8.GetString(message.Body);
+                tblAccounts accounts = JsonConvert.DeserializeObject<tblAccounts>(reply,
+
+                new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                });
+                db.tblAccounts.Add(accounts);
+                db.SaveChanges();
+                await queuecedulaClient.CompleteAsync(message.SystemProperties.LockToken);
+            }
+
+            Task ExceptionReceivedHandler(ExceptionReceivedEventArgs exceptionReceivedEventArgs)
+            {
+                Console.WriteLine(exceptionReceivedEventArgs.Exception);
+                return Task.CompletedTask;
+            }
+
             return View(db.tblAccounts.Where(x => x.IdCard == idCard).ToList());
         }
 
