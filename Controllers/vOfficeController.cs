@@ -160,11 +160,11 @@ namespace NetBanking.Controllers
 
                     if (transactions2.TransactState.Trim() == "Procesado" || transactions2.TransactState.Trim() == "Procesando")
                     {
-                        db.tblTransactions.Add(transactions2);
-                        db.SaveChanges();
                         var id = User.Identity.Name;
                         var idCard = db.NetBankingUserRequest.Where(x => x.PersonalEmail == id).FirstOrDefault().PersonalEmail;
                         log.Info($"El usuario {idCard} ha hecho un transacción.");
+                        db.tblTransactions.Add(transactions2);
+                        db.SaveChanges();
                     }
                     else
                     {
@@ -388,8 +388,8 @@ namespace NetBanking.Controllers
         public ActionResult AccUserConsult()
         {
             ViewBag.Actualizar = "";
-            //var id = User.Identity.Name;
-            var idCard = "550";/*db.NetBankingUserRequest.Where(x => x.PersonalEmail == id).FirstOrDefault().IdCard.Trim();*/
+            var id = User.Identity.Name;
+            var idCard = db.NetBankingUserRequest.Where(x => x.PersonalEmail == id).FirstOrDefault().IdCard.Trim();
             string cedulaString = "Endpoint=sb://integracion.servicebus.windows.net/;SharedAccessKeyName=todo;SharedAccessKey=RCP3GyGxzKFJAsywsh4urvs/bSVanEzNY5RPpAlGAdQ=";
             string queuetcedula = "cedulanet";
             var messageBody = JsonConvert.SerializeObject(idCard);
