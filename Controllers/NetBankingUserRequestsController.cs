@@ -72,7 +72,7 @@ namespace NetBanking.Controllers
             {
                 db.NetBankingUserRequest.Add(netBankingUserRequest);
                 db.SaveChanges();
-                //log.Info($"El cliente de cédula {IdCard.IdCard} ha hecho una solicitud");
+                log.Info($"El cliente de cédula {netBankingUserRequest.IdCard} ha hecho una solicitud");
                 return RedirectToAction("../Home/Index");
             }
 

@@ -328,6 +328,7 @@ namespace NetBanking.Controllers
 
                     db.Entry(row).State = EntityState.Modified;
                     db.SaveChanges();
+                    log.Info($"La solicitud de usuario de {row.Name} {row.LastName} ha sido rechazada.");
                     return RedirectToAction("Authorization");
                 }
 
@@ -352,6 +353,7 @@ namespace NetBanking.Controllers
 
                     db.Entry(row).State = EntityState.Modified;
                     db.SaveChanges();
+                    log.Info($"La solicitud de usuario de {row.Name} {row.LastName} ha sido aceptada.");
                     return RedirectToAction("Authorization");
                 }
             }
