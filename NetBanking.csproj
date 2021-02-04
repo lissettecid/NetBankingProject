@@ -323,10 +323,13 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Image\ahorropig.jpg" />
+    <Content Include="Image\BancoDigital.jpg" />
     <Content Include="Image\Bancoman-escala1.png" />
     <Content Include="Image\Bancoman-escala2.png" />
     <Content Include="Image\campo.jpg" />
     <Content Include="Image\prestamo.jpg" />
+    <Content Include="Image\Servicios.jpg" />
+    <Content Include="Image\tarjetas.jpg" />
     <Content Include="Image\viajes.jpg" />
     <Content Include="Models\BancomanNetBanking.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
