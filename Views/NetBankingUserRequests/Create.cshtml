@@ -24,7 +24,7 @@
                     <label>Cédula</label>
                     <div class="col-md-12">
                         @Html.EditorFor(model => model.IdCard, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.IdCard, "*Obligatorio", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(model => model.IdCard, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>
@@ -33,7 +33,7 @@
                     <label>Fecha de Nacimiento</label>
                     <div class="col-md-12">
                         @Html.EditorFor(model => model.BirthDate, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.BirthDate, "*Obligatorio", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(model => model.BirthDate, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>
@@ -45,7 +45,7 @@
                     <label>Nombres</label>
                     <div class="col-md-12">
                         @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Name, "*Obligatorio", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>
@@ -55,7 +55,7 @@
                     <label>Apellidos</label>
                     <div class="col-md-12">
                         @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.LastName, "*Obligatorio", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>
@@ -67,7 +67,7 @@
                     <label>Teléfono</label>
                     <div class="col-md-12">
                         @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.PhoneNumber, "*Obligatorio", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>
@@ -76,7 +76,7 @@
                     <label>Celular</label>
                     <div class="col-md-12">
                         @Html.EditorFor(model => model.CellPhone, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.CellPhone, "*Obligatorio", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(model => model.CellPhone, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>
@@ -95,7 +95,7 @@
             <label>Dirección</label>
             <div class="col-md-12">
                 @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Address, "*Obligatorio", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -113,7 +113,7 @@
                     <label>Correo electrónico personal</label>
                     <div class="col-md-12">
                         @Html.EditorFor(model => model.PersonalEmail, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.PersonalEmail, "*Obligatorio", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(model => model.PersonalEmail, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>
